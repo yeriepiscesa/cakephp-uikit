@@ -1,0 +1,62 @@
+{#
+/**
+ * UIKit Theme - Index Template
+ * CakePHP Bake Template
+ */
+#}
+<?php
+/**
+ * @var \{{ namespace }}\View\AppView $this
+ * @var iterable<\{{ entityClass }}> ${{ pluralVar }}
+ */
+
+$this->element('Uikit.page_header', [
+    'title' => __('{{ pluralHumanName }}'),
+    'actions' => [
+        [
+            'label' => __('New {{ singularHumanName }}'),
+            'url' => ['action' => 'add'],
+            'class' => 'uk-button uk-button-primary'
+        ]
+    ]
+]);
+?>
+
+<?= $this->element('Uikit.table_controls') ?>
+
+<div class="datalist-table datalist-freeze-3">
+    <div class="uk-overflow-auto">
+        <table class="uk-table uk-table-small uk-table-striped">
+            <thead>
+                <tr>
+                    <th class="uk-text-center">&nbsp;</th>
+{% for field in fields %}
+                    <th class="uk-text-nowrap"><?= $this->Sort->column('{{ field }}', '{{ field|humanize }}') ?></th>
+{% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(!${{ pluralVar }}->count()): ?>
+                <tr>
+                    <td colspan="{{ fields|length + 1 }}" class="uk-text-center uk-text-muted uk-text-bold">
+                        <?= __('No records found') ?>
+                    </td>
+                </tr>
+                <?php endif; ?>
+                <?php foreach (${{ pluralVar }} as ${{ singularVar }}): ?>
+                <tr>
+                    <td class="uk-text-center uk-table-shrink uk-text-nowrap">
+                        <?= $this->element('Uikit.list_action_buttons', ['entity' => ${{ singularVar }}]); ?>
+                    </td>
+{% for field in fields %}
+                    <td><?= h(${{ singularVar }}->{{ field }}) ?></td>
+{% endfor %}
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<?= $this->element('Uikit.table_paginator') ?>
+
+

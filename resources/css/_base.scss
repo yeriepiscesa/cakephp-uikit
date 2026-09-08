@@ -1,0 +1,12 @@
+/* Base Styles */
+
+@use 'variables' as *;
+
+html {
+    font-size: 14px;
+}
+
+body {
+    background: #f5f5f5;
+    font-family: $font-family;
+}

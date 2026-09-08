@@ -1,0 +1,43 @@
+{#
+/**
+ * UIKit Theme - View Template
+ * CakePHP Bake Template
+ */
+#}
+<?php
+/**
+ * @var \{{ namespace }}\View\AppView $this
+ * @var \{{ entityClass }} ${{ singularVar }}
+ */
+
+$this->assign('title', __('{{ singularHumanName }}'));
+?>
+
+<div class="uk-overflow-auto">
+    <table class="uk-table uk-table-striped uk-table-divider">
+        <tbody>
+{% set associations = {'BelongsTo': [], 'HasOne': [], 'HasMany': [], 'BelongsToMany': []}|merge(associations) %}
+{% set fieldsData = Bake.getViewFieldsData(fields, schema, associations) %}
+{% set associationFields = fieldsData.associationFields %}
+{% set groupedFields = fieldsData.groupedFields %}
+{% for field in fields %}
+    {% if field != primaryKey[0] and associationFields[field] is not defined %}
+            <tr>
+                <th><?= __('{{ field|humanize }}') ?></th>
+                <td><?= h(${{ singularVar }}->{{ field }}) ?></td>
+            </tr>
+    {% endif %}
+{% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<?= $this->element('crud_buttons', [
+    'type' => 'view',
+    'entity' => ${{ singularVar }},
+    'options' => [
+        'showDelete' => true,
+        'showList' => true,
+        'showNew' => true
+    ]
+]) ?>

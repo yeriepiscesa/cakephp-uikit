@@ -1,0 +1,14 @@
+/* Admin Panel Custom Styles */
+
+// Forward partials using @use (Dart Sass)
+@forward 'variables';
+@forward 'base';
+@forward 'header';
+@forward 'sidebar';
+@forward 'menu';
+@forward 'content';
+@forward 'forms';
+@forward 'tables';
+
+// Import Google Font Outfit
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');

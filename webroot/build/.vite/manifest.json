@@ -1,0 +1,100 @@
+{
+  "__commonjsHelpers-Cpj98o6Y.js": {
+    "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
+    "name": "_commonjsHelpers"
+  },
+  "_image-preview-BFsS63HQ.js": {
+    "file": "assets/image-preview-BFsS63HQ.js",
+    "name": "image-preview"
+  },
+  "_module.esm-S4M4TpEG.js": {
+    "file": "assets/module.esm-S4M4TpEG.js",
+    "name": "module.esm"
+  },
+  "_notifications-Buoutv_R.js": {
+    "file": "assets/notifications-Buoutv_R.js",
+    "name": "notifications",
+    "imports": [
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
+  "_tom-select-DQKaNtan.css": {
+    "file": "assets/tom-select-DQKaNtan.css",
+    "src": "_tom-select-DQKaNtan.css"
+  },
+  "_tom-select.complete-Bs0VTztu.js": {
+    "file": "assets/tom-select.complete-Bs0VTztu.js",
+    "name": "tom-select.complete",
+    "css": [
+      "assets/tom-select-DQKaNtan.css"
+    ]
+  },
+  "resources/js/admin/airport.js": {
+    "file": "assets/admin/airport-Bpm8O8DQ.js",
+    "name": "admin/airport",
+    "src": "resources/js/admin/airport.js",
+    "isEntry": true,
+    "imports": [
+      "_tom-select.complete-Bs0VTztu.js"
+    ]
+  },
+  "resources/js/admin/form-wysiwyg.js": {
+    "file": "assets/admin/form-wysiwyg-CDOUVlPv.js",
+    "name": "admin/form-wysiwyg",
+    "src": "resources/js/admin/form-wysiwyg.js",
+    "isEntry": true,
+    "imports": [
+      "_image-preview-BFsS63HQ.js",
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ],
+    "css": [
+      "assets/form-wysiwyg-Bf4bJ6eu.css"
+    ]
+  },
+  "resources/js/admin/form.js": {
+    "file": "assets/admin/form-B6ZpArm4.js",
+    "name": "admin/form",
+    "src": "resources/js/admin/form.js",
+    "isEntry": true,
+    "imports": [
+      "_image-preview-BFsS63HQ.js"
+    ]
+  },
+  "resources/js/admin/lookup-select.js": {
+    "file": "assets/admin/lookup-select-Qoj6IJKW.js",
+    "name": "admin/lookup-select",
+    "src": "resources/js/admin/lookup-select.js",
+    "isEntry": true,
+    "imports": [
+      "_tom-select.complete-Bs0VTztu.js",
+      "_module.esm-S4M4TpEG.js"
+    ]
+  },
+  "resources/js/uikit-admin.js": {
+    "file": "assets/uikit-admin-Cj_MPj_T.js",
+    "name": "uikit-admin",
+    "src": "resources/js/uikit-admin.js",
+    "isEntry": true,
+    "imports": [
+      "_module.esm-S4M4TpEG.js",
+      "_notifications-Buoutv_R.js",
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ],
+    "css": [
+      "assets/uikit-admin-COOyuq6t.css"
+    ]
+  },
+  "resources/js/uikit.js": {
+    "file": "assets/uikit-6rZK-6sf.js",
+    "name": "uikit",
+    "src": "resources/js/uikit.js",
+    "isEntry": true,
+    "imports": [
+      "_notifications-Buoutv_R.js",
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ],
+    "css": [
+      "assets/uikit-DMI2VUCx.css"
+    ]
+  }
+}

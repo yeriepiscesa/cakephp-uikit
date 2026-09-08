@@ -1,0 +1,93 @@
+/* Forms */
+
+form {
+    .error-message {
+        color: #e74c3c;
+        font-size: 0.875rem;
+        margin-top: 5px;
+    }
+}
+
+/* CMS WYSIWYG Form Layout */
+
+.cms-wysiwyg-page {
+    .cms-wysiwyg-main {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 300px);
+
+        // Remove margin from title field to keep editor tight below it
+        > .uk-margin {
+            margin-bottom: 15px;
+        }
+    }
+
+    .cms-wysiwyg-editor-wrap {
+        flex: 1 1 auto;
+        min-height: 320px;
+        display: flex;
+        flex-direction: column;
+
+        > .input,
+        textarea {
+            display: none;
+        }
+
+        #editor {
+            min-height: 280px;
+        }
+
+        .ql-toolbar {
+            flex: 0 0 auto;
+        }
+
+        .ql-container {
+            flex: 1 1 auto;
+            min-height: 280px;
+            overflow-y: auto;
+            // Override Quill snow CSS (height: 100%) which collapses when parent height is auto
+            height: auto !important;
+            font-size: 1rem;
+        }
+
+        .ql-editor {
+            min-height: 280px;
+        }
+    }
+
+    .cms-sidebar-box {
+        .uk-card-header {
+            padding: 10px 20px;
+            border-bottom: 1px solid #e5e5e5;
+
+            h3 {
+                margin: 0;
+                font-size: 0.75rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+                color: #555;
+            }
+        }
+
+        .uk-card-body {
+            padding: 15px 20px;
+        }
+    }
+
+    .cms-sidebar-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    // Responsive image preview in sidebar
+    .cms-sidebar-box {
+        .image-upload-preview {
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+}

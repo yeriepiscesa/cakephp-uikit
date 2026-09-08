@@ -1,0 +1,48 @@
+{#
+/**
+ * UIKit Theme - Edit Template
+ * CakePHP Bake Template
+ */
+#}
+<?php
+/**
+ * @var \{{ namespace }}\View\AppView $this
+ * @var \{{ entityClass }} ${{ singularVar }}
+ */
+
+$this->assign('title', __('Edit {{ singularHumanName }}'));
+?>
+
+<?= $this->Form->create(${{ singularVar }}, ['class' => 'uk-form-stacked'{% if fileFields is not empty %}, 'type' => 'file'{% endif %}]) ?>
+{% set associations = {'BelongsTo': [], 'HasOne': [], 'HasMany': [], 'BelongsToMany': []}|merge(associations) %}
+{% set fileFields = fileFields|default([]) %}
+{% set excludeFields = ['created', 'modified', 'updated'] + fileFields + uploadRelatedFields|default([]) %}
+{% for field in fields %}
+    {% if field != primaryKey[0] and field not in excludeFields %}
+    <div class="uk-margin">
+        <label class="uk-form-label" for="{{ field }}"><?= __('{{ field|humanize }}') ?></label>
+        <div class="uk-form-controls">
+            <?= $this->Form->control('{{ field }}', ['label' => false, 'class' => 'uk-input']) ?>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+{% for field in fileFields %}
+    <div class="uk-margin">
+        <label class="uk-form-label" for="{{ field }}"><?= __('{{ field|humanize }}') ?></label>
+        <div class="uk-form-controls">
+            <?= $this->Form->control('{{ field }}', ['label' => false, 'type' => 'file']) ?>
+        </div>
+    </div>
+{% endfor %}
+
+    <?= $this->element('crud_buttons', [
+        'type' => 'form',
+        'entity' => ${{ singularVar }},
+        'options' => [
+            'returnUrl' => $returnUrl,
+            'showDelete' => true,
+            'showNew' => true,
+        ]
+    ]) ?>
+<?= $this->Form->end() ?>

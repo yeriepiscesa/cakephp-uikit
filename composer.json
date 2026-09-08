@@ -1,0 +1,31 @@
+{
+    "name": "yeriepiscesa/cakephp-uikit",
+    "description": "UIkit theme plugin for CakePHP with Alpine.js and Vite",
+    "type": "cakephp-plugin",
+    "license": "MIT",
+    "keywords": [
+        "cakephp",
+        "uikit",
+        "theme",
+        "vite",
+        "alpinejs"
+    ],
+    "require": {
+        "php": ">=8.5",
+        "cakephp/cakephp": "^5.3",
+        "icings/menu": "^5.0",
+        "josbeir/cakephp-vite": "^0.1.2"
+    },
+    "suggest": {
+        "cakedc/users": "Template overrides for login, register, and password reset",
+        "yeriepiscesa/cakephp-business-users": "Optional admin template overrides for BusinessUsers"
+    },
+    "autoload": {
+        "psr-4": {
+            "Uikit\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

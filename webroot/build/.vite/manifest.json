@@ -81,7 +81,8 @@
       "__commonjsHelpers-Cpj98o6Y.js"
     ],
     "css": [
-      "assets/uikit-admin-COOyuq6t.css"
+      "assets/uikit-admin-COOyuq6t.css",
+      "assets/admin-polish.css"
     ]
   },
   "resources/js/uikit.js": {

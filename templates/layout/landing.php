@@ -5,7 +5,7 @@
  * @var \App\View\AppView $this
  */
 
-$siteName = 'Flight Booking';
+$siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,7 @@ $siteName = 'Flight Booking';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $siteName ?>:
+        <?= h($siteName) ?>:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>

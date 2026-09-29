@@ -12,6 +12,7 @@
 use Cake\Core\Configure;
 
 $this->layout = 'Uikit.landing';
+$identityField = (string)Configure::read('Auth.Authenticators.Form.fields.username', 'email');
 ?>
 
 <div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
@@ -22,21 +23,23 @@ $this->layout = 'Uikit.landing';
                     <span uk-icon="icon: lock; ratio: 1.2"></span>
                     <?= __d('cake_d_c/users', 'Login') ?>
                 </h3>
-                <p class="uk-text-muted uk-margin-small-top"><?= __d('cake_d_c/users', 'Please enter your email and password') ?></p>
+                <p class="uk-text-muted uk-margin-small-top"><?= __d('cake_d_c/users', 'Please enter your username or email and password') ?></p>
             </div>
 
             <?= $this->Flash->render('auth') ?>
             
             <?= $this->Form->create(null, ['class' => 'uk-form-stacked']) ?>
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="email"><?= __d('cake_d_c/users', 'Email') ?></label>
+                    <label class="uk-form-label" for="login-identity"><?= __d('cake_d_c/users', 'Email or username') ?></label>
                     <div class="uk-form-controls">
-                        <?= $this->Form->control('email', [
+                        <?= $this->Form->control($identityField, [
                             'label' => false,
                             'required' => true,
-                            'type' => 'email',
+                            'type' => $identityField === 'email' ? 'email' : 'text',
+                            'id' => 'login-identity',
+                            'autocomplete' => 'username',
                             'class' => 'uk-input',
-                            'placeholder' => __d('cake_d_c/users', 'Enter your email')
+                            'placeholder' => __d('cake_d_c/users', 'Enter your email or username')
                         ]) ?>
                     </div>
                 </div>

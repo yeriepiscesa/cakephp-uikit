@@ -4,7 +4,7 @@
  * @var \App\View\AppView $this
  */
 
-$siteName = 'Travel';
+$siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 $user = $this->getRequest()->getAttribute('identity');
 ?>
 <!DOCTYPE html>
@@ -13,7 +13,7 @@ $user = $this->getRequest()->getAttribute('identity');
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        <?= $siteName ?> - Admin:
+        <?= h($siteName) ?> - Admin:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
@@ -55,7 +55,7 @@ $user = $this->getRequest()->getAttribute('identity');
                     </button>
                 </div>
                 <a class="uk-navbar-item uk-logo" href="<?= $this->Url->build('/') ?>">
-                    <strong><?= $siteName ?></strong> <span class="uk-text-muted uk-text-small">Admin</span>
+                    <strong><?= h($siteName) ?></strong> <span class="uk-text-muted uk-text-small">Admin</span>
                 </a>
             </div>
 

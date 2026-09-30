@@ -99,7 +99,10 @@ $user = $this->getRequest()->getAttribute('identity');
     <aside class="admin-sidebar" id="adminSidebar">
         <!-- User Info -->
         <div class="admin-user-info">
-            <div class="admin-user-avatar">
+            <a class="admin-user-avatar" href="<?= h($this->Url->build([
+                'plugin' => 'CakeDC/Users', 'prefix' => false,
+                'controller' => 'Users', 'action' => 'profile',
+            ])) ?>" aria-label="<?= h(__('Go to profile')) ?>">
                 <?php if ($user && !empty($user['id']) && \Cake\Core\Plugin::isLoaded('BusinessUsers')): ?>
                     <img src="<?= h($this->Url->build([
                         'plugin' => 'BusinessUsers', 'prefix' => false,
@@ -108,7 +111,7 @@ $user = $this->getRequest()->getAttribute('identity');
                 <?php else: ?>
                     <?= h(strtoupper(substr((string)($user->first_name ?? $user->email ?? 'A'), 0, 1))) ?>
                 <?php endif; ?>
-            </div>
+            </a>
             <h4 class="admin-user-name uk-margin-remove"><?= h($user ? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: $user->email : 'Admin User') ?></h4>
             <p class="admin-user-role uk-margin-remove"><?= h($user->role ?? 'Administrator') ?></p>
         </div>

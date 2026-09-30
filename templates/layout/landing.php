@@ -8,7 +8,7 @@
 $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?= h(\Cake\I18n\I18n::getLocale()) ?>">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,6 +31,9 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
     <?= $this->fetch('css') ?>
 </head>
 <body>
+    <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>
+        <?= $this->element($languageSwitcher) ?>
+    <?php endif; ?>
     <!-- Render flash messages as notifications -->
     <?php 
     $messages = $this->getRequest()->getFlash()->consume('flash');

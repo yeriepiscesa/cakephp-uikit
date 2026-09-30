@@ -100,14 +100,14 @@ $user = $this->getRequest()->getAttribute('identity');
         <!-- User Info -->
         <div class="admin-user-info">
             <div class="admin-user-avatar">
-                <?php
-                $initials = 'A';
-                if ($user) {
-                    $name = $user->first_name ?? $user->email ?? 'Admin';
-                    $initials = strtoupper(substr($name, 0, 1));
-                }
-                echo h($initials);
-                ?>
+                <?php if ($user && !empty($user['id']) && \Cake\Core\Plugin::isLoaded('BusinessUsers')): ?>
+                    <img src="<?= h($this->Url->build([
+                        'plugin' => 'BusinessUsers', 'prefix' => false,
+                        'controller' => 'ProfilePhotos', 'action' => 'view', $user['id'],
+                    ])) ?>" alt="<?= h(__('Your profile photo')) ?>">
+                <?php else: ?>
+                    <?= h(strtoupper(substr((string)($user->first_name ?? $user->email ?? 'A'), 0, 1))) ?>
+                <?php endif; ?>
             </div>
             <h4 class="admin-user-name uk-margin-remove"><?= h($user ? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: $user->email : 'Admin User') ?></h4>
             <p class="admin-user-role uk-margin-remove"><?= h($user->role ?? 'Administrator') ?></p>

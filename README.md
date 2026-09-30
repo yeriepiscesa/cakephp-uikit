@@ -125,8 +125,8 @@ Default theme name adalah `Uikit` bila key tidak diset.
 
 | Plugin | Keterangan |
 |---|---|
-| `cakedc/users` | Template override untuk login, register, reset password |
-| `yeriepiscesa/cakephp-business-users` | Override template admin BusinessUsers (opsional) |
+| `cakedc/users` | Contoh template auth, admin, dan member untuk disalin ke host |
+| `yeriepiscesa/cakephp-business-users` | Contoh template admin dan dukungan foto profil |
 
 ## Asset Vite (npm)
 
@@ -184,10 +184,7 @@ plugins/Uikit/
 │   ├── Admin/          ← template admin host (Dashboard, Users)
 │   │   ├── Users/      ← admin CRUD users (via BusinessUsers\Controller\Admin\UsersController)
 │   │   └── Dashboard/
-│   └── plugin/         ← template override untuk plugin lain
-│       └── CakeDC/
-│           └── Users/
-│               └── Users/ ← template public (login, register, dll)
+│   └── examples/users/ ← contoh template auth, admin, dan member untuk disalin ke host
 ├── vite.config.js
 ├── package.json
 └── webroot/build/
@@ -204,58 +201,18 @@ Referensi integrasi:
 - Renderer: `templates/element/Menu/admin.php`
 - Helper registrasi adapter (app): `src/View/Helper/MenuHelper.php` (di aplikasi utama)
 
-## Plugin Template Override
+## User template examples
 
-Theme Uikit menyediakan template override untuk plugin lain menggunakan konvensi CakePHP:
+User templates live in `templates/examples/users/` and are not resolved by CakePHP automatically. Copy them into the host application's `templates/plugin/` directory. The Al Irsyad Admin host provides `bin/cake install_user_templates`, which copies these examples without overwriting existing files unless `--force` is supplied.
 
-- Path: `templates/plugin/<PluginName>/...`
-- CakePHP otomatis mencari template di sini sebelum fallback ke template bawaan plugin.
+- `auth/CakeDC/Users/Users/`: login, registration, recovery, and two-factor pages using `Uikit.landing`.
+- `admin/CakeDC/Users/Users/`: profile, change password, and CRUD pages using `Uikit.admin`.
+- `admin/BusinessUsers/Admin/Users/`: BusinessUsers admin CRUD and profile pages using `Uikit.admin`.
+- `member/CakeDC/Users/Users/`: alternative profile and password pages using `Uikit.member`, with no admin sidebar.
 
-Plugin yang saat ini di-override:
+Install the `admin` set for a backoffice or `member` set for a member-facing site. Both include the shared `auth` pages. The upload form and avatar URLs in these examples require the BusinessUsers profile-photo migration and routes. Run `bin/cake migrations migrate --plugin BusinessUsers` after updating that plugin.
 
-| Plugin | Template path | Keterangan |
-|---|---|---|
-| CakeDC/Users (public) | `templates/plugin/CakeDC/Users/Users/` | Login, register, reset password, verify |
-
-### Cms Plugin (override opsional)
-
-Template admin CMS default berada di `plugins/Cms/templates/Admin/`. Uikit **tidak** menyimpan copy template CMS kecuali ada kebutuhan override khusus.
-
-Jika theme Uikit perlu mengganti markup CMS (misalnya komponen UIkit berbeda dari default), buat override di:
-
-- `templates/plugin/Cms/Admin/<Module>/`
-
-CakePHP akan memakai override theme ini sebelum fallback ke template bawaan plugin Cms.
-
-### BusinessUsers Plugin (override opsional)
-
-Template admin BusinessUsers default berada di `plugins/BusinessUsers/templates/Admin/`. Uikit **tidak** menyimpan copy template BusinessUsers kecuali ada kebutuhan override khusus.
-
-Jika theme Uikit perlu mengganti markup BusinessUsers, buat override di:
-
-- `templates/plugin/BusinessUsers/Admin/<Module>/`
-
-CakePHP akan memakai override theme ini sebelum fallback ke template bawaan plugin BusinessUsers.
-
-### FlightBooking Plugin (override opsional)
-
-Template admin FlightBooking default berada di `plugins/FlightBooking/templates/Admin/`. Uikit **tidak** menyimpan copy template Airlines, Airports, Cities, FlightRoutes, atau States.
-
-Jika theme Uikit perlu mengganti markup FlightBooking, buat override di:
-
-- `templates/plugin/FlightBooking/Admin/<Module>/`
-
-### Admin Users (CakeDC/Users)
-
-Template admin untuk manajemen users **tidak** menggunakan path `plugin/CakeDC/Users/` karena dihandle oleh `BusinessUsers\Controller\Admin\UsersController` (extends CakeDC) dengan prefix `Admin`:
-
-- Template default: `plugins/BusinessUsers/templates/Admin/Users/`
-- Override theme (opsional): `plugins/Uikit/templates/plugin/BusinessUsers/Admin/Users/`
-- Controller: `plugins/BusinessUsers/src/Controller/Admin/UsersController.php`
-- Route: generic admin fallback `/admin/users/*`
-- Layout admin di-set otomatis oleh `beforeRender` di controller
-
-> **Catatan**: Saat menambah modul baru ke plugin Cms, BusinessUsers, atau FlightBooking, buat template default di plugin domain masing-masing. Override di Uikit hanya jika markup perlu disesuaikan khusus untuk theme ini.
+To customize a screen, edit the copied host template. Keep the example files in Uikit for new projects; they do not override host templates at runtime.
 
 ## Styling Sidebar/Menu
 

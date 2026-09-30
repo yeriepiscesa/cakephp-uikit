@@ -3,6 +3,7 @@ $this->layout = 'Uikit.admin';
 $this->assign('title', __d('cake_d_c/users', 'User'));
 $user = ${$tableAlias};
 ?>
+<img class="user-list-avatar uk-margin-bottom" src="<?= h($this->Url->build(['plugin' => 'BusinessUsers', 'prefix' => false, 'controller' => 'ProfilePhotos', 'action' => 'view', $user->id])) ?>" alt="">
 <dl class="uk-description-list">
     <dt><?= __d('cake_d_c/users', 'Username') ?></dt><dd><?= h($user->username) ?></dd>
     <dt><?= __d('cake_d_c/users', 'Email') ?></dt><dd><?= h($user->email) ?></dd>

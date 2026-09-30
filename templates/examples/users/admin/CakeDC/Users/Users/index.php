@@ -11,6 +11,7 @@ $users = ${$tableAlias};
 <div class="uk-overflow-auto">
     <table class="uk-table uk-table-divider uk-table-striped">
         <thead><tr>
+            <th><?= __d('cake_d_c/users', 'Photo') ?></th>
             <th><?= $this->Paginator->sort('username', __d('cake_d_c/users', 'Username')) ?></th>
             <th><?= $this->Paginator->sort('email', __d('cake_d_c/users', 'Email')) ?></th>
             <th><?= $this->Paginator->sort('first_name', __d('cake_d_c/users', 'First name')) ?></th>
@@ -20,6 +21,7 @@ $users = ${$tableAlias};
         <tbody>
         <?php foreach ($users as $user): ?>
             <tr>
+                <td><img class="user-list-avatar" src="<?= h($this->Url->build(['plugin' => 'BusinessUsers', 'prefix' => false, 'controller' => 'ProfilePhotos', 'action' => 'view', $user->id])) ?>" alt=""></td>
                 <td><?= h($user->username) ?></td><td><?= h($user->email) ?></td>
                 <td><?= h($user->first_name) ?></td><td><?= h($user->last_name) ?></td>
                 <td>

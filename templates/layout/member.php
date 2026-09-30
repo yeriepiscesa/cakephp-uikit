@@ -2,7 +2,7 @@
 $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 ?>
 <!DOCTYPE html>
-<html lang="<?= h((string)\Cake\Core\Configure::read('App.defaultLocale', 'en')) ?>">
+<html lang="<?= h((string)\Cake\I18n\I18n::getLocale()) ?>">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,6 +23,10 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
                 <a class="uk-navbar-item uk-logo" href="<?= h($this->Url->build('/')) ?>"><?= h($siteName) ?></a>
             </div>
             <div class="uk-navbar-right">
+            <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>
+                <?= $this->element($languageSwitcher) ?>
+            <?php endif; ?>
+
                 <a class="uk-navbar-item" href="<?= h($this->Url->build([
                     'plugin' => 'CakeDC/Users', 'prefix' => false, 'controller' => 'Users', 'action' => 'profile',
                 ])) ?>"><?= __d('cake_d_c/users', 'Profile') ?></a>

@@ -8,7 +8,7 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 $user = $this->getRequest()->getAttribute('identity');
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?= h(\Cake\I18n\I18n::getLocale()) ?>">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,11 +55,15 @@ $user = $this->getRequest()->getAttribute('identity');
                     </button>
                 </div>
                 <a class="uk-navbar-item uk-logo" href="<?= $this->Url->build('/') ?>">
-                    <strong><?= h($siteName) ?></strong> <span class="uk-text-muted uk-text-small">Admin</span>
+                    <strong><?= h($siteName) ?></strong> <span class="uk-text-muted uk-text-small"><?= __('Admin') ?></span>
                 </a>
             </div>
 
             <div class="uk-navbar-right">
+            <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>
+                <?= $this->element($languageSwitcher) ?>
+            <?php endif; ?>
+
                 <ul class="uk-navbar-nav">
                     <li>
                         <a href="#">
@@ -68,25 +72,25 @@ $user = $this->getRequest()->getAttribute('identity');
                         </a>
                         <div class="uk-navbar-dropdown">
                             <ul class="uk-nav uk-navbar-dropdown-nav">
-                                <li class="uk-nav-header">Notifications</li>
-                                <li><a href="#">New booking received</a></li>
-                                <li><a href="#">Payment confirmed</a></li>
+                                <li class="uk-nav-header"><?= __('Notifications') ?></li>
+                                <li><a href="#"><?= __('New booking received') ?></a></li>
+                                <li><a href="#"><?= __('Payment confirmed') ?></a></li>
                                 <li class="uk-nav-divider"></li>
-                                <li><a href="#">View all</a></li>
+                                <li><a href="#"><?= __('View all') ?></a></li>
                             </ul>
                         </div>
                     </li>
                     <li>
                         <a href="#">
                             <span uk-icon="icon: user"></span>
-                            <?= h($user ? ($user->first_name ?? $user->email) : 'Guest') ?>
+                            <?= h($user ? ($user->first_name ?? $user->email) : __('Guest')) ?>
                         </a>
                         <div class="uk-navbar-dropdown">
                             <ul class="uk-nav uk-navbar-dropdown-nav">
-                                <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?>"><span uk-icon="icon: user"></span> Profile</a></li>
-                                <li><a href="#"><span uk-icon="icon: settings"></span> Settings</a></li>
+                                <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?>"><span uk-icon="icon: user"></span> <?= __('Profile') ?></a></li>
+                                <li><a href="#"><span uk-icon="icon: settings"></span> <?= __('Settings') ?></a></li>
                                 <li class="uk-nav-divider"></li>
-                                <li><?= $this->Html->link('<span uk-icon="icon: sign-out"></span> Logout', ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
+                                <li><?= $this->Html->link('<span uk-icon="icon: sign-out"></span> ' . __('Logout'), ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
                             </ul>
                         </div>
                     </li>
@@ -112,8 +116,8 @@ $user = $this->getRequest()->getAttribute('identity');
                     <?= h(strtoupper(substr((string)($user->first_name ?? $user->email ?? 'A'), 0, 1))) ?>
                 <?php endif; ?>
             </a>
-            <h4 class="admin-user-name uk-margin-remove"><?= h($user ? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: $user->email : 'Admin User') ?></h4>
-            <p class="admin-user-role uk-margin-remove"><?= h($user->role ?? 'Administrator') ?></p>
+            <h4 class="admin-user-name uk-margin-remove"><?= h($user ? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: $user->email : __('Admin User')) ?></h4>
+            <p class="admin-user-role uk-margin-remove"><?= h($user->role ?? __('Administrator')) ?></p>
         </div>
 
         <!-- Menu -->

@@ -8,7 +8,7 @@
 $siteName = 'Travel';
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?= h(\Cake\I18n\I18n::getLocale()) ?>">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +39,10 @@ $siteName = 'Travel';
             </a>
         </div>
         <div class="uk-navbar-right">
+            <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>
+                <?= $this->element($languageSwitcher) ?>
+            <?php endif; ?>
+
             <?= $this->element('Menu/main') ?>
         </div>
     </nav>

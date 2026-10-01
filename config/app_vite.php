@@ -1,33 +1,32 @@
 <?php
+declare(strict_types=1);
 
-/**
- * ViteHelper Configuration untuk Plugin Uikit
- * 
- * @see https://github.com/passchn/cakephp-vite
- */
-
-use Cake\Core\Plugin;
 use Cake\Core\Configure;
 
-$pluginPath = Plugin::path('Uikit');
+// The optional host config is copied from Uikit/config/uikit_assets.json.
+$defaults = json_decode((string)file_get_contents(__DIR__ . '/uikit_assets.json'), true, 512, JSON_THROW_ON_ERROR);
+$hostConfig = CONFIG . 'uikit_assets.json';
+$settings = is_file($hostConfig)
+    ? array_replace($defaults, json_decode((string)file_get_contents($hostConfig), true, 512, JSON_THROW_ON_ERROR))
+    : $defaults;
+$buildDirectory = $settings['buildDirectory'];
+if (!is_string($buildDirectory) || !preg_match('#^webroot/[a-zA-Z0-9_-]+(?:/[a-zA-Z0-9_-]+)*$#', $buildDirectory)) {
+    throw new RuntimeException('Uikit buildDirectory must be a project-relative path inside webroot/.');
+}
+$publicDirectory = substr($buildDirectory, strlen('webroot/'));
 
 return [
     'CakeVite' => [
         'configs' => [
             'uikit' => [
                 'build' => [
-                    // Output directory di plugin webroot (false = langsung di webroot/build)
-                    'outDirectory' => 'build',
-                    // Path ke manifest.json di plugin (Vite 5 menaruh di .vite/)
-                    'manifestPath' => $pluginPath . 'webroot' . DS . 'build' . DS . '.vite' . DS . 'manifest.json',
+                    'outDirectory' => $publicDirectory,
+                    'manifestPath' => WWW_ROOT . str_replace('/', DS, $publicDirectory) . DS . '.vite' . DS . 'manifest.json',
                 ],
                 'devServer' => [
-                    // URL Vite dev server untuk Uikit (port berbeda dari main app)
-                    'url' => 'http://localhost:3000',
-                    // Host hints untuk mendeteksi local development
+                    'url' => $settings['devServerUrl'],
                     'hostHints' => ['localhost', '.test', '.local'],
                     'entries' => [
-                        // Path relatif terhadap plugin root (vite root)
                         'script' => [
                             'resources/js/uikit.js',
                             'resources/js/uikit-admin.js',
@@ -39,14 +38,11 @@ return [
                     ],
                 ],
                 'forceProductionMode' => Configure::read('ViteHelper.mode') === 'production',
-                // Set plugin name untuk load dari plugin webroot
-                'plugin' => 'Uikit',
+                // Assets now live in the host webroot, so no plugin URL prefix.
+                'plugin' => null,
                 'preload' => 'none',
                 'productionModeHint' => 'vprod',
-                'viewBlocks' => [
-                    'css' => 'css',
-                    'script' => 'script',
-                ],
+                'viewBlocks' => ['css' => 'css', 'script' => 'script'],
             ],
         ],
     ],

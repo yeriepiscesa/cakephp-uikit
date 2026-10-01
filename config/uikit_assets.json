@@ -1,0 +1,5 @@
+{
+  "workDirectory": "resources/cakephp-uikit",
+  "buildDirectory": "webroot/cakephp-uikit",
+  "devServerUrl": "http://localhost:3000"
+}

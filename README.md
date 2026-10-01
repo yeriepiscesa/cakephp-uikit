@@ -39,7 +39,7 @@ Atau via repository GitHub (sebelum terdaftar di Packagist):
         }
     ],
     "require": {
-        "yeriepiscesa/cakephp-uikit": "dev-main"
+        "yeriepiscesa/cakephp-uikit": "dev-master"
     }
 }
 ```
@@ -62,13 +62,15 @@ Plugin theme **tidak** memiliki migration database.
 
 ### 4. Build asset front-end
 
+Jalankan dari root aplikasi CakePHP setelah `composer install`:
+
 ```bash
-cd vendor/yeriepiscesa/cakephp-uikit   # atau plugins/Uikit saat development monorepo
-npm install
-npm run build
+cp vendor/yeriepiscesa/cakephp-uikit/config/uikit_assets.json config/uikit_assets.json
+node vendor/yeriepiscesa/cakephp-uikit/bin/uikit-assets.mjs install
+node vendor/yeriepiscesa/cakephp-uikit/bin/uikit-assets.mjs build
 ```
 
-Hasil build ada di `webroot/build/`. Commit folder ini ke repo plugin jika ingin consumer tidak perlu menjalankan npm.
+File konfigurasi host opsional; tanpa disalin, nilai default yang sama tetap dipakai. `install` menyalin package, lockfile, konfigurasi Vite, dan source aset dari plugin ke `resources/cakephp-uikit/`, lalu menjalankan `npm ci` di sana. `build` menyalin ulang source plugin dan membuat `webroot/cakephp-uikit/.vite/manifest.json` serta asetnya. Dependency npm dan hasil build tidak ditulis ke `vendor/`. Jalankan `install` lagi jika lockfile plugin berubah setelah pembaruan Composer.
 
 ## Konfigurasi
 
@@ -100,7 +102,17 @@ Configure::write('Uikit.viewHelpers', ['MyPlugin.MyHelper']);
 
 ### Vite / CakeVite
 
-Plugin memuat `config/app_vite.php` otomatis saat bootstrap dengan config key `uikit`. Tidak perlu copy manual kecuali ingin override.
+Plugin memuat `config/app_vite.php` secara otomatis dengan config key `uikit`. Salin `config/uikit_assets.json` ke folder `config/` host untuk mengubah path:
+
+```json
+{
+  "workDirectory": "resources/cakephp-uikit",
+  "buildDirectory": "webroot/cakephp-uikit",
+  "devServerUrl": "http://localhost:3000"
+}
+```
+
+Kedua direktori relatif terhadap root proyek. `workDirectory` harus di bawah `resources/`, sedangkan `buildDirectory` harus di bawah `webroot/`. CakeVite membaca manifest dari direktori output host yang sama dan membuat URL aset tanpa prefix plugin. Abaikan kedua direktori hasil di Git host.
 
 Opsional — paksa mode production di `config/app.php`:
 
@@ -132,27 +144,21 @@ Default theme name adalah `Uikit` bila key tidak diset.
 
 ### Development mode
 
+Dari root aplikasi CakePHP, setelah langkah `install`:
+
 ```bash
-npm run dev
+node vendor/yeriepiscesa/cakephp-uikit/bin/uikit-assets.mjs dev
 ```
 
-Default dev server:
-
-- URL: `http://localhost:3000`
-- Port: `3000`
-
-Jalankan dev server **bersamaan** dengan server CakePHP. Akses aplikasi lewat URL CakePHP, bukan port Vite.
+Dev server menggunakan `devServerUrl` (default `http://localhost:3000`). Akses halaman lewat server CakePHP. Source yang dilayani Vite adalah salinan di `resources/cakephp-uikit/resources/`; jalankan kembali perintah `dev` atau `prepare` untuk menyegarkan salinan setelah mengubah source plugin.
 
 ### Build production
 
 ```bash
-npm run build
+node vendor/yeriepiscesa/cakephp-uikit/bin/uikit-assets.mjs build
 ```
 
-Output:
-
-- `webroot/build/`
-- Manifest: `webroot/build/.vite/manifest.json`
+Output default adalah `webroot/cakephp-uikit/`, dengan manifest di `webroot/cakephp-uikit/.vite/manifest.json`. Direktori lama `vendor/yeriepiscesa/cakephp-uikit/webroot/build/` tidak dipakai lagi.
 
 ## Entry Points Vite
 
@@ -174,7 +180,8 @@ Catatan penting:
 ```
 plugins/Uikit/
 ├── config/
-│   └── app_vite.php
+│   ├── app_vite.php
+│   └── uikit_assets.json
 ├── resources/
 │   ├── css/
 │   └── js/
@@ -185,9 +192,9 @@ plugins/Uikit/
 │   │   ├── Users/      ← admin CRUD users (via BusinessUsers\Controller\Admin\UsersController)
 │   │   └── Dashboard/
 │   └── examples/users/ ← contoh template auth, admin, dan member untuk disalin ke host
+├── bin/uikit-assets.mjs
 ├── vite.config.js
-├── package.json
-└── webroot/build/
+└── package.json
 ```
 
 ## Menu System dan Boundary
@@ -230,10 +237,10 @@ Jika mengubah style, lakukan perubahan di source SCSS lalu build ulang asset.
 
 ## Workflow Pengembangan
 
-1. Jalankan `npm run dev` di plugin Uikit saat mengerjakan UI.
+1. Jalankan `node vendor/yeriepiscesa/cakephp-uikit/bin/uikit-assets.mjs dev` dari root aplikasi saat mengerjakan UI.
 2. Akses aplikasi dari server CakePHP (bukan port Vite).
 3. Edit source di `resources/` dan template di `templates/`.
-4. Build dengan `npm run build` saat siap release.
+4. Build dengan `node vendor/yeriepiscesa/cakephp-uikit/bin/uikit-assets.mjs build` dari root aplikasi saat siap release.
 
 ## Checklist Saat Menambah UI Baru
 

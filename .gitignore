@@ -22,3 +22,6 @@ dist-ssr/
 # OS
 .DS_Store
 Thumbs.db
+
+# Assets are built in the host project.
+/webroot/build/

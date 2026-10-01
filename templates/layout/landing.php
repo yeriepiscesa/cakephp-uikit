@@ -32,7 +32,9 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 </head>
 <body>
     <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>
-        <?= $this->element($languageSwitcher) ?>
+        <div class="uk-flex uk-flex-right uk-padding-small">
+            <?= $this->element($languageSwitcher) ?>
+        </div>
     <?php endif; ?>
     <!-- Render flash messages as notifications -->
     <?php 

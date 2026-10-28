@@ -92,7 +92,7 @@ class AppView extends \Uikit\View\AppView
 
 - `Uikit.Paginator`, `Uikit.Sort`, `Uikit.ImageUpload`
 - `CakeVite.Vite` (jika plugin CakeVite loaded)
-- `Menu` helper host (jika `App\View\Helper\MenuHelper` ada)
+- `Uikit.Menu` (tersedia sebagai `$this->Menu` jika plugin Icings/Menu aktif)
 
 Helper tambahan bisa didaftarkan via `config/app_view.php` plugin Uikit atau override di host:
 
@@ -137,7 +137,7 @@ Default theme name adalah `Uikit` bila key tidak diset.
 
 | Plugin | Keterangan |
 |---|---|
-| `cakedc/users` | Contoh template auth, admin, dan member untuk disalin ke host |
+| `cakedc/users` | Template auth otomatis; contoh admin dan member dapat disalin ke host |
 | `yeriepiscesa/cakephp-business-users` | Contoh template admin dan dukungan foto profil |
 
 ## Asset Vite (npm)
@@ -206,11 +206,15 @@ plugins/Uikit/
 Referensi integrasi:
 
 - Renderer: `templates/element/Menu/admin.php`
-- Helper registrasi adapter (app): `src/View/Helper/MenuHelper.php` (di aplikasi utama)
+- Helper bersama: `src/View/Helper/MenuHelper.php` di plugin Uikit
+
+Plugin lain atau view class kustom dapat memuat helper dengan `$this->loadHelper('Uikit.Menu')`. Helper membangun menu admin dari kelas yang terdaftar dalam `Menu.adminAdapters`. Adapter mengembalikan item melalui `getAdminMenuItems()`; metadata `auth.controller` diperiksa melalui policy akses request, dan metadata `auth.roles`/`auth.superuser` diperiksa terhadap identity. Untuk metadata `auth.permission`, adapter harus menyediakan `isMenuItemAllowed(ServerRequest $request, string $permission): bool`; tanpa pemeriksa tersebut item tidak ditampilkan. Accounting menggunakan pemeriksaan tenant dan permission miliknya sendiri. Menu tidak menggantikan otorisasi pada controller.
+
+Untuk menu publik, `$this->Menu->mainMenu()` menyediakan tree Icings/Menu yang dapat diisi oleh host. `adminMenu()` mengembalikan tree admin yang telah dibangun. `$this->Menu->IcingsMenu` menyediakan helper Icings/Menu bila diperlukan.
 
 ## User template examples
 
-User templates live in `templates/examples/users/` and are not resolved by CakePHP automatically. Copy them into the host application's `templates/plugin/` directory. The Al Irsyad Admin host provides `bin/cake install_user_templates`, which copies these examples without overwriting existing files unless `--force` is supplied.
+Uikit automatically selects the auth templates in `templates/examples/users/auth/CakeDC/Users/Users/` for the corresponding unprefixed CakeDC/Users actions, unless the controller selects another theme or an explicit template. To override one, create `templates/plugin/CakeDC/Users/Users/<template>.php` in the host; the host template takes priority. Other actions retain their normal CakePHP template resolution. Admin and member examples still need to be copied into the host application if desired. The Al Irsyad Admin host provides `bin/cake install_user_templates`, which copies examples without overwriting existing files unless `--force` is supplied.
 
 - `auth/CakeDC/Users/Users/`: login, registration, recovery, and two-factor pages using `Uikit.landing`.
 - `admin/CakeDC/Users/Users/`: profile, change password, and CRUD pages using `Uikit.admin`.
@@ -219,7 +223,7 @@ User templates live in `templates/examples/users/` and are not resolved by CakeP
 
 Install the `admin` set for a backoffice or `member` set for a member-facing site. Both include the shared `auth` pages. The upload form and avatar URLs in these examples require the BusinessUsers profile-photo migration and routes. Run `bin/cake migrations migrate --plugin BusinessUsers` after updating that plugin.
 
-To customize a screen, edit the copied host template. Keep the example files in Uikit for new projects; they do not override host templates at runtime.
+To customize a screen, add or edit its host template. Auth templates in Uikit are fallbacks and do not override host templates.
 
 ## Styling Sidebar/Menu
 

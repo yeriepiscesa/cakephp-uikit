@@ -6,7 +6,7 @@
  * @var \App\View\AppView $this
  */
 ?>
-<div class="uk-margin-medium-top">
+<div class="uk-margin-medium-top admin-list-pagination">
     <div class="uk-flex uk-flex-between uk-flex-middle uk-flex-wrap uk-gap">
         <p class="uk-text-small uk-margin-remove">
             <?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?>

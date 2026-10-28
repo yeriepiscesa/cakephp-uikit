@@ -21,18 +21,18 @@ $user = $this->getRequest()->getAttribute('identity');
     <?php
     // Load Vite assets for Uikit theme
     // CRITICAL: uikit-admin.js MUST load first, before any other scripts
-    
+
     // Load uikit-admin.js first
     $this->Vite->script([
         'devEntries' => ['resources/js/uikit-admin.js'],
         'prodFilter' => 'uikit-admin.js',
         'config' => 'uikit',
     ]);
-    
+
     // Then load additional scripts (like form.js)
     $additionalDevScripts = $devScripts ?? [];
     $additionalProdScripts = $prodScripts ?? [];
-    
+
     if (!empty($additionalDevScripts) || !empty($additionalProdScripts)) {
         $this->Vite->script([
             'devEntries' => $additionalDevScripts,
@@ -45,7 +45,8 @@ $user = $this->getRequest()->getAttribute('identity');
     <?= $this->fetch('css') ?>
     <?= $this->element('Uikit.branding_styles') ?>
 </head>
-<body>
+<?php $formWidth = $this->fetch('formWidth') ?: '1-1'; ?>
+<body class="admin-form-width-<?= h(in_array($formWidth, ['1-1', '1-2', '1-3', '1-4'], true) ? $formWidth : '1-1') ?>">
     <!-- Header -->
     <header class="admin-header">
         <nav class="uk-navbar-container" uk-navbar>
@@ -73,8 +74,8 @@ $user = $this->getRequest()->getAttribute('identity');
                     </a>
                     <div id="admin-account-menu" uk-dropdown="mode: click; pos: bottom-right">
                         <ul class="uk-nav uk-dropdown-nav">
-                            <li><?= $this->Html->link(__('Profile'), ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?></li>
-                            <li><?= $this->Html->link(__('Logout'), ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?></li>
+                            <li><?= $this->Html->link('<span uk-icon="icon: user" aria-hidden="true"></span> ' . h(__('Profile')), ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
+                            <li><?= $this->Html->link('<span uk-icon="icon: sign-out" aria-hidden="true"></span> ' . h(__('Logout')), ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
                         </ul>
                     </div>
                 </div>
@@ -118,17 +119,43 @@ $user = $this->getRequest()->getAttribute('identity');
     <!-- Main Content -->
     <main class="admin-content" id="adminContent">
         <div class="admin-content-inner uk-card uk-card-body">
+            <!-- Page navigation -->
+            <?php if ($this->fetch('breadcrumbs')): ?>
+                <?= $this->fetch('breadcrumbs') ?>
+            <?php elseif ($this->fetch('title')): ?>
+                <?php
+                $currentAction = (string)$this->getRequest()->getParam('action');
+                $controllerLabel = \Cake\Utility\Inflector::humanize(
+                    \Cake\Utility\Inflector::underscore((string)$this->getRequest()->getParam('controller')),
+                );
+                ?>
+                <nav class="admin-breadcrumb" aria-label="<?= h(__('Breadcrumb')) ?>">
+                    <?= $this->Html->link(__('Dashboard'), '/admin') ?>
+                    <?php if (in_array($currentAction, ['add', 'edit', 'view'], true)): ?>
+                        <span aria-hidden="true">/</span>
+                        <?= $this->Html->link($controllerLabel, $returnUrl ?? ['action' => 'index']) ?>
+                    <?php endif; ?>
+                    <span aria-hidden="true">/</span>
+                    <span aria-current="page"><?= h(strip_tags($this->fetch('title'))) ?></span>
+                </nav>
+            <?php endif; ?>
             <!-- Page Title -->
-            <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom">
+            <div class="admin-page-header uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom">
                 <div>
-                <?php if ($this->fetch('title')): ?>                
+                <?php if ($this->fetch('title')): ?>
                     <h2 class="uk-margin-remove">
                         <?= $this->fetch('title') ?>
                     </h2>
                 <?php endif; ?>
+                <?php if ($this->fetch('subtitle')): ?>
+                    <p class="admin-page-subtitle"><?= $this->fetch('subtitle') ?></p>
+                <?php endif; ?>
                 </div>
                 <div class="action-buttons">
                     <?= $this->fetch('actionButtons') ?>
+                    <?php if (isset($returnUrl) && in_array($this->getRequest()->getParam('action'), ['add', 'edit'], true)): ?>
+                        <?= $this->Html->link(__('Back to list'), $returnUrl, ['class' => 'uk-button uk-button-default']) ?>
+                    <?php endif; ?>
                 </div>
             </div>
             <hr class="uk-margin-medium-bottom">

@@ -64,52 +64,10 @@ class ListTable
 
         const rows = table.querySelectorAll("tr");
         
-        rows.forEach((row, index) => {
-            // Store original background color (for striped rows)
-            const isStriped = index % 2 === 1;
-            const originalColor = isStriped ? '#f8f8f8' : '#ffffff';
-            
-            // Hover effect
-            row.addEventListener('mouseenter', function() {
-                if (!this.classList.contains('row-selected')) {
-                    this.querySelectorAll('td').forEach(td => {
-                        td.style.backgroundColor = '#ffffee';
-                        td.style.zIndex = '1';
-                    });
-                }
-            });
-
-            row.addEventListener('mouseleave', function() {
-                if (!this.classList.contains('row-selected')) {
-                    this.querySelectorAll('td').forEach(td => {
-                        td.style.backgroundColor = '';
-                        td.style.zIndex = '';
-                    });
-                }
-            });
-
-            // Click effect (toggle selection)
+        rows.forEach((row) => {
             row.addEventListener('click', function(e) {
-                // Ignore clicks on action buttons/links
-                if (e.target.closest('a, button')) {
-                    return;
-                }
-
-                if (this.classList.contains('row-selected')) {
-                    // Deselect: return to original color
-                    this.classList.remove('row-selected');
-                    this.querySelectorAll('td').forEach(td => {
-                        td.style.backgroundColor = originalColor;
-                        td.style.zIndex = '';
-                    });
-                } else {
-                    // Select: apply selected color
-                    this.classList.add('row-selected');
-                    this.querySelectorAll('td').forEach(td => {
-                        td.style.backgroundColor = '#ffffcc';
-                        td.style.zIndex = '1';
-                    });
-                }
+                if (e.target.closest('a, button, input, select, textarea, label')) return;
+                this.classList.toggle('row-selected');
             });
         });
     }

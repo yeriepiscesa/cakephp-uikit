@@ -37,17 +37,20 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
         </div>
     <?php endif; ?>
     <!-- Render flash messages as notifications -->
-    <?php 
-    $messages = $this->getRequest()->getFlash()->consume('flash');
-    if(!empty($messages)) {
-        foreach ($messages as $message) {
-            $element = $message['element'] ?? 'notification';
-            $elementName = $element === 'notification' ? 'flash/notification' : $element . '_notification';
-            echo $this->element($elementName, [
-                'message' => $message['message'],
-                'params' => $message['params'] ?? [],
-            ]);
-        }
+    <?php
+    $notificationElements = [
+        'flash/default' => 'Uikit.flash/notification',
+        'flash/success' => 'Uikit.flash/success_notification',
+        'flash/error' => 'Uikit.flash/error_notification',
+        'flash/warning' => 'Uikit.flash/warning_notification',
+        'flash/info' => 'Uikit.flash/notification',
+    ];
+    foreach ($this->getRequest()->getFlash()->consume('flash') as $message) {
+        $element = $message['element'] ?? 'flash/default';
+        echo $this->element($notificationElements[$element] ?? $element, [
+            'message' => $message['message'],
+            'params' => $message['params'] ?? [],
+        ]);
     }
     ?>
 

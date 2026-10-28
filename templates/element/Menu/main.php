@@ -7,18 +7,10 @@
  * @var \App\View\AppView $this
  */
 
-// Access Icings Menu helper via the MenuHelper dependency
-$icingsMenu = $this->Menu->Menu;
+$menu = $this->Menu->mainMenu();
+$icingsMenu = $this->Menu->IcingsMenu;
 
-// Access the menu via reflection since _menus is protected
-$reflection = new \ReflectionClass($icingsMenu);
-$menusProperty = $reflection->getProperty('_menus');
-$menusProperty->setAccessible(true);
-$menus = $menusProperty->getValue($icingsMenu);
-
-if (isset($menus['main'])) {
-    $menu = $menus['main'];
-    
+if ($menu) {
     // Get current active item
     $currentItem = $icingsMenu->getCurrentItem('main');
     

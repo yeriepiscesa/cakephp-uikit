@@ -11,7 +11,7 @@ use Cake\View\View;
  * Default application view for Uikit-themed apps and plugins.
  *
  * @property \CakeVite\View\Helper\ViteHelper $Vite
- * @property \App\View\Helper\MenuHelper $Menu
+ * @property \Uikit\View\Helper\MenuHelper $Menu
  * @property \Uikit\View\Helper\ImageUploadHelper $ImageUpload
  * @property \Uikit\View\Helper\SortHelper $Sort
  * @property \Uikit\View\Helper\PaginatorHelper $Paginator
@@ -33,8 +33,8 @@ class AppView extends View
             $this->loadHelper('CakeVite.Vite');
         }
 
-        if (class_exists(\App\View\Helper\MenuHelper::class)) {
-            $this->loadHelper('Menu');
+        if (Plugin::isLoaded('Icings/Menu')) {
+            $this->loadHelper('Uikit.Menu');
         }
 
         foreach ((array)Configure::read('Uikit.viewHelpers', []) as $helper) {

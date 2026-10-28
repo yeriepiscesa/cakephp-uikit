@@ -10,11 +10,10 @@
 // This element only renders menu trees; feature/menu definitions are provided by adapters (eg. Cms plugin).
 
 // Access Icings Menu helper via the MenuHelper dependency
-$icingsMenu = $this->Menu->Menu;
-$menus = (fn() => $this->_menus)->call($icingsMenu);
+$menu = $this->Menu->adminMenu();
+$icingsMenu = $this->Menu->IcingsMenu;
 
-if (isset($menus['admin'])) {
-    $menu = $menus['admin'];
+if ($menu) {
     
     // Get current active item (exact URL match)
     $currentItem = $icingsMenu->getCurrentItem('admin');

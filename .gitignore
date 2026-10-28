@@ -25,3 +25,6 @@ Thumbs.db
 
 # Assets are built in the host project.
 /webroot/build/
+
+# Generated migration locks
+**/Migrations/*.lock

@@ -30,6 +30,13 @@ class UikitPlugin extends BasePlugin
     {
         parent::bootstrap($app);
 
+        $formDefaults = require dirname(__DIR__) . '/config/app.php';
+        foreach ($formDefaults['Uikit'] as $key => $default) {
+            if (Configure::read('Uikit.' . $key) === null) {
+                Configure::write('Uikit.' . $key, $default);
+            }
+        }
+
         if (file_exists(dirname(__DIR__) . '/config/app_vite.php')) {
             Configure::load('Uikit.app_vite');
         }

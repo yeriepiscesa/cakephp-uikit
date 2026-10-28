@@ -24,16 +24,19 @@ $defaults = [
 $options = array_merge($defaults, $options ?? []);
 
 // Use returnUrl if provided, otherwise use cancelUrl
-$cancelUrl = $options['returnUrl'] ?? $options['cancelUrl'];
+$cancelUrl = $options['returnUrl'] ?? $returnUrl ?? $options['cancelUrl'];
 ?>
 
 <?php if ($type === 'form'): ?>
+    <?php if (!empty($options['redirect'])): ?>
+        <?= $this->Form->hidden('_uikit_form_redirect', ['value' => $options['redirect']]) ?>
+    <?php endif; ?>
     <!-- Form buttons (add/edit) -->     
     <hr class="uk-divider uk-margin-large-top">
     <div class="uk-flex uk-flex-between">
         <div class="uk-grid-small" uk-grid>
             <div><?= $this->Html->link(__('Cancel'), $cancelUrl, ['class' => 'uk-button uk-button-default']) ?></div>
-            <div><?= $this->Form->button(__('Submit'), ['class' => 'uk-button uk-button-primary']) ?></div>
+            <div><?= $this->Form->button(__('Save'), ['class' => 'uk-button uk-button-primary']) ?></div>
         </div>
         <div>
             <?php if ($options['showDelete'] && isset($entity->id)): ?>

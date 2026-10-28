@@ -10,10 +10,19 @@
 
 $title = $title ?? null;
 $actions = $actions ?? [];
+$subtitle = $subtitle ?? null;
+$formWidth = $formWidth ?? '1/1';
 ?>
 
 <?php if ($title): ?>
     <?php $this->assign('title', $title); ?>
+<?php endif; ?>
+
+<?php if ($subtitle !== null): ?>
+    <?php $this->assign('subtitle', h((string)$subtitle)); ?>
+<?php endif; ?>
+<?php if (in_array($formWidth, ['1/1', '1/2', '1/3', '1/4'], true)): ?>
+    <?php $this->assign('formWidth', str_replace('/', '-', $formWidth)); ?>
 <?php endif; ?>
 
 <?php if (!empty($actions)): ?>

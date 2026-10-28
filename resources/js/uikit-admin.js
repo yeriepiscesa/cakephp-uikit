@@ -15,6 +15,7 @@ import '@js/notifications.js';
 import '@js/admin/nav.js';
 // Import admin list table functionality
 import '@js/admin/list-table.js';
+import '@js/admin/tom-select.js';
 
 // Load UIkit icons
 UIkit.use(Icons);

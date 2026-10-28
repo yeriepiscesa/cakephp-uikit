@@ -317,9 +317,103 @@ konfigurasi plugin Users. Template login host yang sudah ada tetap didahulukan
 dan perlu disesuaikan sendiri jika ingin menggunakan tampilan baru.
 
 Pada desktop tombol navigasi mengganti sidebar menjadi toolbar horizontal;
-pada layar kecil tombol membuka sidebar dan Escape menutupnya. Item menu dan
+pada layar kecil tombol membuka sidebar dan Escape menutupnya. Pilihan terakhir
+disimpan di localStorage browser secara terpisah untuk desktop dan layar kecil;
+jika storage tidak tersedia, navigasi tetap dapat digunakan tanpa menyimpan. Item menu dan
 otorisasi tetap berasal dari adapter domain.
 
 Host dan plugin lokal mensyaratkan PHP minimal 8.4. Periksa juga versi tepat
 yang dibutuhkan dependensi terkunci sebelum memilih versi PHP; misalnya versi
 PHPUnit pada lockfile saat ini membutuhkan minimal PHP 8.4.1.
+
+### Form admin
+
+Default form disediakan di `Uikit/config/app.php` dan dapat ditimpa di
+`config/app.php` host:
+
+```php
+'Uikit' => [
+    'form_edit_redirect' => 'stay', // stay atau index
+    'form_add_redirect' => 'add',   // add, edit, atau index
+],
+```
+
+`stay` tetap pada edit yang disimpan, `add` membuka form tambah kosong,
+`edit` membuka form edit record baru, dan `index` kembali ke daftar.
+Per form, override melalui elemen tombol di template:
+
+```php
+$this->element('Uikit.crud_buttons', [
+    'type' => 'form', 'entity' => $entity,
+    'options' => ['redirect' => 'index', 'showDelete' => false],
+]);
+```
+
+Pada controller yang menggunakan CrudConnect, tombol kembali dan cancel
+menggunakan URL daftar terakhir dari controller yang sama, termasuk query
+pencarian, filter dan pagination. Redirect berlaku setelah penyimpanan sukses;
+validasi dan otorisasi tetap ditangani controller dan model domain.
+
+Judul, subtitle dan lebar panel dapat disetel per template:
+
+```php
+$this->element('Uikit.page_header', [
+    'title' => __('Edit item'),
+    'subtitle' => __('Update the item details.'),
+    'formWidth' => '1/2', // 1/1 (default), 1/2, 1/3, atau 1/4
+]);
+```
+
+Di layar kecil panel selalu memenuhi lebar yang tersedia. Untuk select dengan
+opsi lokal, tambahkan `data-tom-select` pada elemen select; nilai yang dikirim
+tetap nilai option asli. Tom Select tidak mengubah otorisasi atau validasi.
+
+### Listing admin
+
+Untuk daftar dengan `Uikit.admin`, gunakan elemen dan kelas bersama:
+
+```php
+$this->element('Uikit.page_header', [
+    'title' => __('Items'),
+    'actions' => [[
+        'label' => __('New item'),
+        'url' => ['action' => 'add'],
+        'class' => 'uk-button uk-button-primary',
+    ]],
+]);
+?>
+<?= $this->element('Uikit.table_controls') ?>
+<div class="datalist-table datalist-freeze-3">
+    <div class="uk-overflow-auto">
+        <table class="uk-table uk-table-small uk-table-striped">
+            <thead><!-- headings and Sort->column() --></thead>
+            <tbody><!-- rows and Uikit.list_action_buttons --></tbody>
+        </table>
+    </div>
+</div>
+<?= $this->element('Uikit.table_paginator') ?>
+```
+
+Letakkan ketiga komponen sebagai elemen berurutan agar pencarian, tabel dan
+pagination tampil dalam satu panel. Kelas `datalist-freeze-2`, `-3`, atau `-4`
+menjaga sejumlah kolom tetap terlihat ketika tabel bergulir horizontal.
+Komponen menyediakan parameter GET `search` dan `limit`, tombol Clear Search,
+dan mempertahankan filter serta pengurutan lain. Controller/model tetap harus
+menerapkan pencarian, pengurutan, pagination dan otorisasi; komponen visual ini
+tidak memfilter data sendiri. Lihat `BusinessUsers.TenantsTable` untuk contoh
+Search behavior dan template `BusinessUsers/Admin/Tenants/index.php` untuk
+contoh lengkap. Elemen `Uikit.list_action_buttons` menyediakan aksi baris;
+controller tetap wajib memeriksa izin aksi.
+
+URL daftar terakhir disimpan per plugin, prefix dan controller saat form dibuka
+dari daftar yang bersangkutan. Tombol Back to list dan Cancel menggunakannya,
+termasuk query string. Jika form dibuka langsung tanpa riwayat daftar yang
+valid, tombol mengarah ke index controller. Pengaturan redirect sukses di atas
+berlaku untuk controller yang menggunakan `CrudConnect.CrudController` dan
+`Uikit.crud_buttons`; controller kustom perlu menangani redirect sendiri.
+
+Breadcrumb otomatis muncul di atas judul admin: Dashboard, daftar controller
+untuk halaman add/edit/view, dan halaman saat ini. Pada form CrudConnect,
+tautan daftar memakai URL kembali yang sudah disimpan. Template dapat mengganti
+breadcrumb otomatis dengan mengisi view block `breadcrumbs`; markup kustom
+bertanggung jawab atas escaping dan label aksesibilitasnya sendiri.

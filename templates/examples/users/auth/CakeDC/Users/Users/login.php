@@ -11,22 +11,13 @@
 
 use Cake\Core\Configure;
 
-$this->layout = 'Uikit.landing';
+$this->layout = 'Uikit.auth';
 $identityField = (string)Configure::read('Auth.Authenticators.Form.fields.username', 'email');
 ?>
 
-<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
-    <div class="uk-width-large">
-        <div class="uk-card uk-card-default uk-card-body uk-box-shadow-large">
-            <div class="uk-text-center uk-margin">
-                <h3 class="uk-card-title uk-margin-remove-bottom">
-                    <span uk-icon="icon: lock; ratio: 1.2"></span>
-                    <?= __d('cake_d_c/users', 'Login') ?>
-                </h3>
-                <p class="uk-text-muted uk-margin-small-top"><?= __d('cake_d_c/users', 'Please enter your username or email and password') ?></p>
-            </div>
-
-            <?= $this->Flash->render('auth') ?>
+        <span class="theme-eyebrow"><?= h(__('Welcome back')) ?></span>
+        <h2><?= h(__d('cake_d_c/users', 'Login')) ?></h2>
+        <p class="theme-login-intro"><?= h(__d('cake_d_c/users', 'Please enter your username or email and password')) ?></p>
             
             <?= $this->Form->create(null, ['class' => 'uk-form-stacked']) ?>
                 <div class="uk-margin">
@@ -120,6 +111,3 @@ $identityField = (string)Configure::read('Auth.Authenticators.Form.fields.userna
                     ?>
                 </div>
             <?= $this->Form->end() ?>
-        </div>
-    </div>
-</div>

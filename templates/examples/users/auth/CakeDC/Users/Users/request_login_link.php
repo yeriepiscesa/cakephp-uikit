@@ -5,10 +5,10 @@
 
 use Cake\Core\Configure;
 
-$this->layout = 'Uikit.landing';
+$this->layout = 'Uikit.auth';
 ?>
 
-<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle">
     <div class="uk-width-large">
         <div class="uk-card uk-card-default uk-card-body uk-box-shadow-large">
             <div class="uk-text-center uk-margin">
@@ -21,7 +21,7 @@ $this->layout = 'Uikit.landing';
                 </p>
             </div>
 
-            <?= $this->Flash->render('auth') ?>
+            
 
             <?= $this->Form->create(null, ['class' => 'uk-form-stacked']) ?>
                 <div class="uk-margin">

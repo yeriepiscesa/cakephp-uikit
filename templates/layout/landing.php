@@ -29,6 +29,7 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
+    <?= $this->element('Uikit.branding_styles') ?>
 </head>
 <body>
     <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>

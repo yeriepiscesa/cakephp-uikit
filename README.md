@@ -216,7 +216,7 @@ Untuk menu publik, `$this->Menu->mainMenu()` menyediakan tree Icings/Menu yang d
 
 Uikit automatically selects the auth templates in `templates/examples/users/auth/CakeDC/Users/Users/` for the corresponding unprefixed CakeDC/Users actions, unless the controller selects another theme or an explicit template. To override one, create `templates/plugin/CakeDC/Users/Users/<template>.php` in the host; the host template takes priority. Other actions retain their normal CakePHP template resolution. Admin and member examples still need to be copied into the host application if desired. The Al Irsyad Admin host provides `bin/cake install_user_templates`, which copies examples without overwriting existing files unless `--force` is supplied.
 
-- `auth/CakeDC/Users/Users/`: login, registration, recovery, and two-factor pages using `Uikit.landing`.
+- `auth/CakeDC/Users/Users/`: login, registration, recovery, and two-factor pages using `Uikit.auth`.
 - `admin/CakeDC/Users/Users/`: profile, change password, and CRUD pages using `Uikit.admin`.
 - `admin/BusinessUsers/Admin/Users/`: BusinessUsers admin CRUD and profile pages using `Uikit.admin`.
 - `member/CakeDC/Users/Users/`: alternative profile and password pages using `Uikit.member`, with no admin sidebar.
@@ -278,3 +278,48 @@ Aturan host membolehkan halaman publik host tanpa login; area `/admin` dan
 `/api` tidak termasuk bypass ini. Plugin domain dan API tetap bertanggung
 jawab atas autentikasi dan otorisasinya sendiri. Daftarkan endpoint REST di
 bawah `/api` melalui routing host atau plugin domain.
+
+### Branding dan warna
+
+Atur branding di konfigurasi host, misalnya `config/app_local.php`:
+
+```php
+'Uikit' => [
+    'siteName' => 'Nama Aplikasi',
+    'branding' => [
+        'tagline' => 'Workspace',
+        'logo' => '/img/logo.svg',
+        'loginImage' => '/img/login-background.jpg',
+        'loginEyebrow' => 'Selamat datang',
+        'loginTitle' => 'Semua pekerjaan, lebih terarah.',
+        'loginDescription' => 'Ruang kerja untuk tim Anda.',
+        'colors' => [
+            'primary' => '#2864df',
+            'primaryHover' => '#1d50bc',
+            'sidebar' => '#16293d',
+            'background' => '#f5f7fa',
+        ],
+    ],
+],
+```
+
+Logo dan gambar adalah URL yang dapat dijangkau browser; letakkan aset publik
+pada `webroot` host atau gunakan URL yang sesuai. Keduanya opsional. Gambar
+login bersifat dekoratif, dengan lapisan gelap untuk menjaga keterbacaan;
+panel tersebut disembunyikan pada layar kecil. Warna menerima hex tiga atau
+enam digit; nilai tidak valid memakai warna default. Pilih kombinasi warna dan
+gambar dengan kontras yang memadai. Konfigurasi ini tidak mengunggah atau
+mengelola file.
+
+Form login tetap memakai autentikasi CakeDC/Users. Tautan lupa kata sandi,
+registrasi, login sosial, login link, remember me, dan reCAPTCHA muncul sesuai
+konfigurasi plugin Users. Template login host yang sudah ada tetap didahulukan
+dan perlu disesuaikan sendiri jika ingin menggunakan tampilan baru.
+
+Pada desktop tombol navigasi mengganti sidebar menjadi toolbar horizontal;
+pada layar kecil tombol membuka sidebar dan Escape menutupnya. Item menu dan
+otorisasi tetap berasal dari adapter domain.
+
+Host dan plugin lokal mensyaratkan PHP minimal 8.4. Periksa juga versi tepat
+yang dibutuhkan dependensi terkunci sebelum memilih versi PHP; misalnya versi
+PHPUnit pada lockfile saat ini membutuhkan minimal PHP 8.4.1.

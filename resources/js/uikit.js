@@ -4,6 +4,7 @@ import Icons from 'uikit/dist/js/uikit-icons';
 
 // UIkit CSS
 import 'uikit/dist/css/uikit.min.css';
+import '@css/login.scss';
 
 // Import notification handler
 import '@js/notifications.js';

@@ -43,6 +43,7 @@ $user = $this->getRequest()->getAttribute('identity');
     ?>
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
+    <?= $this->element('Uikit.branding_styles') ?>
 </head>
 <body>
     <!-- Header -->
@@ -50,7 +51,7 @@ $user = $this->getRequest()->getAttribute('identity');
         <nav class="uk-navbar-container" uk-navbar>
             <div class="uk-navbar-left">
                 <div class="uk-navbar-item">
-                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <button class="sidebar-toggle" type="button" onclick="toggleSidebar()" aria-controls="adminSidebar" aria-expanded="true" aria-label="<?= h(__('Toggle navigation')) ?>">
                         <span uk-icon="icon: menu; ratio: 1.2"></span>
                     </button>
                 </div>
@@ -64,43 +65,31 @@ $user = $this->getRequest()->getAttribute('identity');
                 <?= $this->element($languageSwitcher) ?>
             <?php endif; ?>
 
-                <ul class="uk-navbar-nav">
-                    <li>
-                        <a href="#">
-                            <span uk-icon="icon: bell"></span>
-                            <span class="uk-badge">3</span>
-                        </a>
-                        <div class="uk-navbar-dropdown">
-                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                                <li class="uk-nav-header"><?= __('Notifications') ?></li>
-                                <li><a href="#"><?= __('New booking received') ?></a></li>
-                                <li><a href="#"><?= __('Payment confirmed') ?></a></li>
-                                <li class="uk-nav-divider"></li>
-                                <li><a href="#"><?= __('View all') ?></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span uk-icon="icon: user"></span>
-                            <?= h($user ? ($user->first_name ?? $user->email) : __('Guest')) ?>
-                        </a>
-                        <div class="uk-navbar-dropdown">
-                            <ul class="uk-nav uk-navbar-dropdown-nav">
-                                <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?>"><span uk-icon="icon: user"></span> <?= __('Profile') ?></a></li>
-                                <li><a href="#"><span uk-icon="icon: settings"></span> <?= __('Settings') ?></a></li>
-                                <li class="uk-nav-divider"></li>
-                                <li><?= $this->Html->link('<span uk-icon="icon: sign-out"></span> ' . __('Logout'), ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
+                <div class="admin-account">
+                    <a class="admin-account-trigger" href="#admin-account-menu" aria-label="<?= h(__('Account menu')) ?>">
+                        <span class="admin-account-initial"><?= h(strtoupper(substr((string)($user->first_name ?? $user->email ?? 'A'), 0, 1))) ?></span>
+                        <span><?= h($user ? ($user->first_name ?? $user->email) : __('Guest')) ?></span>
+                        <span uk-icon="icon: chevron-down"></span>
+                    </a>
+                    <div id="admin-account-menu" uk-dropdown="mode: click; pos: bottom-right">
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <li><?= $this->Html->link(__('Profile'), ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?></li>
+                            <li><?= $this->Html->link(__('Logout'), ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false]) ?></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
 
     <!-- Sidebar -->
     <aside class="admin-sidebar" id="adminSidebar">
+        <a class="theme-brand theme-brand-light" href="<?= h($this->Url->build('/')) ?>">
+            <?php if ($logo = \Cake\Core\Configure::read('Uikit.branding.logo')): ?>
+                <img class="theme-brand-logo" src="<?= h($this->Url->build((string)$logo)) ?>" alt="">
+            <?php else: ?><span class="theme-brand-mark" aria-hidden="true">✦</span><?php endif; ?>
+            <span><?= h($siteName) ?><small><?= h((string)\Cake\Core\Configure::read('Uikit.branding.tagline', __('Workspace'))) ?></small></span>
+        </a>
         <!-- User Info -->
         <div class="admin-user-info">
             <a class="admin-user-avatar" href="<?= h($this->Url->build([

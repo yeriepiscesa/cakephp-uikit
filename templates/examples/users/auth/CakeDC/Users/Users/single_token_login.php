@@ -15,8 +15,8 @@
         height: 50px;
     }
 </style>
-<?php $this->layout = 'Uikit.landing'; $this->assign('title', __('Enter Your One-Time Login Token')); ?>
-<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+<?php $this->layout = 'Uikit.auth'; $this->assign('title', __('Enter Your One-Time Login Token')); ?>
+<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle">
 <div class="uk-width-large"><div class="uk-card uk-card-default uk-card-body uk-box-shadow-large">
 <div class="uk-text-center">
     <h4><?= __('Enter Your One-Time Login Token') ?></h4>

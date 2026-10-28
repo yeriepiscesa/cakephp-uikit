@@ -1,0 +1,29 @@
+@use 'login';
+body { background:var(--theme-background); }
+.admin-header { margin-left:260px; position:relative; box-shadow:none; border-bottom:1px solid #e7ebf0; }
+.admin-header .uk-logo { font-size:14px; }
+.admin-sidebar { top:0; background:var(--theme-sidebar); padding:25px 16px 16px; box-sizing:border-box; }
+.admin-sidebar .theme-brand { margin:0 4px 28px; }
+.admin-user-info { display:flex; align-items:center; gap:10px; text-align:left; padding:12px; margin-bottom:20px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); border-radius:9px; }
+.admin-user-avatar { width:38px; height:38px; flex:none; margin:0; font-size:16px; background:var(--theme-primary); }
+.admin-user-role { display:none; }
+.admin-menu { padding:0; }
+.admin-content-inner { background:transparent; border:0; box-shadow:none; padding:0; }
+.admin-content-inner > hr { display:none; }
+.sidebar-toggle { background:#fff; color:#61758a; border:1px solid #e7ebf0; border-radius:8px; width:38px; height:38px; }
+.sidebar-toggle:hover { background:#eef3fa; color:var(--theme-primary); transform:none; }
+.admin-account-trigger { display:flex; align-items:center; gap:10px; color:#40536b; text-decoration:none; }
+.admin-account-initial { display:grid; place-items:center; border-radius:50%; width:35px; height:35px; background:#d9e9ff; color:#3063a8; font-weight:700; }
+.uk-button-primary { background:var(--theme-primary); border-color:var(--theme-primary); }
+.uk-button-primary:hover,.uk-button-primary:focus { background:var(--theme-primary-hover); border-color:var(--theme-primary-hover); }
+.uk-checkbox:checked,.uk-radio:checked { background-color:var(--theme-primary); border-color:var(--theme-primary); }
+@media(min-width:961px) {
+ body.toolbar-mode .admin-header { margin-left:0; }
+ body.toolbar-mode .admin-sidebar { position:relative; top:auto; bottom:auto; width:100%; height:auto; min-height:56px; overflow:visible; padding:0 20px; }
+ body.toolbar-mode .admin-sidebar .theme-brand, body.toolbar-mode .admin-user-info { display:none; }
+ body.toolbar-mode .admin-menu > .uk-nav { display:flex; align-items:flex-start; flex-wrap:wrap; }
+ body.toolbar-mode .admin-menu > .uk-nav > li { position:relative; }
+ body.toolbar-mode .admin-menu > .uk-nav > li > .uk-nav-sub { position:absolute; z-index:10; min-width:220px; background:var(--theme-sidebar); box-shadow:0 10px 25px #12253855; }
+ body.toolbar-mode .admin-content { margin-left:0; }
+}
+@media(max-width:960px) { .admin-header { margin-left:0; } .admin-sidebar { top:0; } .admin-content { margin-left:0; } }

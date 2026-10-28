@@ -1,95 +1,58 @@
-/**
- * Admin Navigation and Sidebar functionality
- */
+const breakpoint = 960;
 
-/**
- * Toggle sidebar between minimized and expanded states
- */
+function syncToggle() {
+    const sidebar = document.getElementById('adminSidebar');
+    const button = document.querySelector('.sidebar-toggle');
+    if (!sidebar || !button) return;
+    const expanded = window.innerWidth <= breakpoint
+        ? sidebar.classList.contains('mobile-open')
+        : !document.body.classList.contains('toolbar-mode');
+    button.setAttribute('aria-expanded', String(expanded));
+}
+
 export function toggleSidebar() {
     const sidebar = document.getElementById('adminSidebar');
-    const content = document.getElementById('adminContent');
-    
-    if (window.innerWidth <= 960) {
-        // Mobile: slide in/out
+    if (!sidebar) return;
+    if (window.innerWidth <= breakpoint) {
         sidebar.classList.toggle('mobile-open');
     } else {
-        // Desktop: minimize/expand
-        sidebar.classList.toggle('minimized');
-        content.classList.toggle('expanded');
-        
-        // Toggle header/icon display
-        const headers = sidebar.querySelectorAll('.uk-nav-header');
-        headers.forEach(header => {
-            const text = header.querySelector('.menu-text');
-            const icon = header.querySelector('.menu-icon');
-            if (sidebar.classList.contains('minimized')) {
-                text.style.display = 'none';
-                icon.style.display = 'inline';
-            } else {
-                text.style.display = 'inline';
-                icon.style.display = 'none';
-            }
-        });
+        document.body.classList.toggle('toolbar-mode');
     }
+    syncToggle();
 }
 
-/**
- * Close mobile sidebar when clicking outside
- */
-function handleOutsideClick(event) {
-    if (window.innerWidth <= 960) {
-        const sidebar = document.getElementById('adminSidebar');
-        const toggle = document.querySelector('.sidebar-toggle');
-        
-        if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+export function initAdminNav() {
+    const sidebar = document.getElementById('adminSidebar');
+    const toggle = document.querySelector('.sidebar-toggle');
+    if (!sidebar || !toggle) return;
+    syncToggle();
+    window.addEventListener('resize', syncToggle);
+    document.addEventListener('click', (event) => {
+        if (window.innerWidth <= breakpoint && !sidebar.contains(event.target) && !toggle.contains(event.target)) {
             sidebar.classList.remove('mobile-open');
+            syncToggle();
         }
-    }
-}
-
-/**
- * Initialize submenu toggle functionality
- */
-function initializeSubmenuToggle() {
-    document.querySelectorAll('.uk-parent > a').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            const sidebar = document.getElementById('adminSidebar');
-            if (!sidebar.classList.contains('minimized')) {
-                e.preventDefault();
-                const parent = this.parentElement;
-                const submenu = this.nextElementSibling;
-                const arrow = this.querySelector('.menu-arrow');
-                
-                // Toggle submenu
-                if (submenu.hasAttribute('hidden')) {
-                    submenu.removeAttribute('hidden');
-                    parent.classList.add('uk-open');
-                    if (arrow) arrow.style.transform = 'rotate(180deg)';
-                } else {
-                    submenu.setAttribute('hidden', '');
-                    parent.classList.remove('uk-open');
-                    if (arrow) arrow.style.transform = 'rotate(0deg)';
-                }
-            }
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && sidebar.classList.contains('mobile-open')) {
+            sidebar.classList.remove('mobile-open');
+            syncToggle();
+            toggle.focus();
+        }
+    });
+    sidebar.querySelectorAll('.uk-parent > a').forEach((link) => {
+        const submenu = link.nextElementSibling;
+        if (!submenu || !submenu.matches('.uk-nav-sub')) return;
+        link.setAttribute('aria-expanded', String(!submenu.hidden));
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            submenu.hidden = !submenu.hidden;
+            link.parentElement.classList.toggle('uk-open', !submenu.hidden);
+            link.setAttribute('aria-expanded', String(!submenu.hidden));
         });
     });
 }
-
-/**
- * Initialize all navigation functionality
- */
-export function initAdminNav() {
-    // Setup outside click handler
-    document.addEventListener('click', handleOutsideClick);
-    
-    // Initialize submenu toggles
-    initializeSubmenuToggle();
-}
-
-// Make toggleSidebar available globally for onclick handlers
 window.toggleSidebar = toggleSidebar;
-
-// Auto-initialize on DOMContentLoaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAdminNav);
 } else {

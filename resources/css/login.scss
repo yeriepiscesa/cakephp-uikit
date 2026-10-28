@@ -1,0 +1,32 @@
+.theme-brand { display:flex; align-items:center; gap:10px; color:#203047; font-size:20px; font-weight:750; line-height:1.2; text-decoration:none; }
+.theme-brand:hover { text-decoration:none; color:inherit; }
+.theme-brand-light { color:#fff; }
+.theme-brand small { display:block; color:#a9bacb; font-size:9px; letter-spacing:1.6px; text-transform:uppercase; margin-top:3px; }
+.theme-brand-mark, .theme-brand-logo { display:grid; place-items:center; flex:none; width:38px; height:38px; border-radius:10px; background:var(--theme-primary); color:#fff; font-size:24px; object-fit:contain; }
+.theme-login-shell { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; }
+.theme-login-story { position:relative; min-height:100vh; background:var(--theme-sidebar); overflow:hidden; color:#fff; }
+.theme-login-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.32; }
+.theme-login-story-content { position:relative; min-height:100vh; padding:42px 9%; display:flex; flex-direction:column; box-sizing:border-box; }
+.theme-login-message { margin:auto 0; max-width:460px; padding:70px 0; }
+.theme-login-message h1 { color:#fff; font-size:42px; line-height:1.16; letter-spacing:-1.5px; }
+.theme-login-message p { color:#d0dce8; line-height:1.8; }
+.theme-eyebrow { color:#7290aa; font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; }
+.theme-login-footer { color:#bdcbd9; font-size:11px; }
+.theme-login-main { display:flex; justify-content:center; align-items:center; padding:60px 30px; background:#fff; }
+.theme-login-card { width:100%; max-width:390px; }
+.theme-login-card h2 { font-size:29px; letter-spacing:-.8px; margin:10px 0; }
+.theme-login-intro { color:#7b899a; margin-bottom:34px; }
+.theme-login-card .uk-input { height:44px; border:1px solid #dfe5eb; border-radius:8px; }
+.theme-login-card .uk-button-primary { background:var(--theme-primary); border-radius:8px; text-transform:none; font-weight:600; }
+.theme-login-card .uk-button-primary:hover { background:var(--theme-primary-hover); }
+.theme-login-card a { color:var(--theme-primary); }
+.theme-login-mobile-brand { display:none; margin-bottom:45px; }
+@media(max-width:760px) { .theme-login-shell { display:block; } .theme-login-story { display:none; } .theme-login-main { min-height:100vh; box-sizing:border-box; } .theme-login-mobile-brand { display:flex; } }
+
+/* Auth examples retain their form markup while sharing the login shell. */
+.theme-login-card .uk-section { padding:0; background:transparent; min-height:0; display:block; }
+.theme-login-card .uk-width-large { width:100%; max-width:none; }
+.theme-login-card .uk-card-default { background:transparent; box-shadow:none; }
+.theme-login-card .uk-card-body { padding:0; }
+.theme-login-card .uk-card-title { font-size:29px; letter-spacing:-.8px; }
+.theme-login-card .uk-text-center.uk-margin { text-align:left !important; }

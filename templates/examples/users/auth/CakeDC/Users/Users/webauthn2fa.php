@@ -5,15 +5,15 @@
  * @var string $username
  */
 $this->Html->script('CakeDC/Users.webauthn.js', ['block' => true]);
-$this->layout = 'Uikit.landing';
+$this->layout = 'Uikit.auth';
 $this->assign('title', __d('cake_d_c/users','Two-factor authentication'));
 ?>
-<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+<div class="uk-section uk-section-muted uk-flex uk-flex-center uk-flex-middle">
     <div class="uk-width-large">
         <div class="uk-card uk-card-default uk-card-body uk-box-shadow-large">
 
-                <?= $this->Flash->render('auth') ?>
-                <?= $this->Flash->render() ?>
+                
+                
                 <fieldset>
                     <div id="webauthn2faRegisterInfo" style="display:none;">
                         <h2 class='text-center'><?= __d('cake_d_c/users', 'Registering your yubico key')?> </h2>

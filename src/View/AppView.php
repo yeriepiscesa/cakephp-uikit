@@ -25,6 +25,8 @@ class AppView extends View
     {
         parent::initialize();
 
+        $this->loadHelper('Uikit.Flash');
+
         $this->loadHelper('Uikit.Paginator');
         $this->loadHelper('Uikit.Sort');
         $this->loadHelper('Uikit.ImageUpload');
@@ -44,3 +46,4 @@ class AppView extends View
         }
     }
 }
+

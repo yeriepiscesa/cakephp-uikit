@@ -36,23 +36,7 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
             <?= $this->element($languageSwitcher) ?>
         </div>
     <?php endif; ?>
-    <!-- Render flash messages as notifications -->
-    <?php
-    $notificationElements = [
-        'flash/default' => 'Uikit.flash/notification',
-        'flash/success' => 'Uikit.flash/success_notification',
-        'flash/error' => 'Uikit.flash/error_notification',
-        'flash/warning' => 'Uikit.flash/warning_notification',
-        'flash/info' => 'Uikit.flash/notification',
-    ];
-    foreach ($this->getRequest()->getFlash()->consume('flash') as $message) {
-        $element = $message['element'] ?? 'flash/default';
-        echo $this->element($notificationElements[$element] ?? $element, [
-            'message' => $message['message'],
-            'params' => $message['params'] ?? [],
-        ]);
-    }
-    ?>
+    <div class="uk-container"><?= $this->Flash->render() ?></div>
 
     <!-- Main Content -->
     <?= $this->fetch('content') ?>
@@ -60,3 +44,4 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
     <?= $this->fetch('script') ?>
 </body>
 </html>
+

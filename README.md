@@ -261,3 +261,20 @@ Jika mengubah style, lakukan perubahan di source SCSS lalu build ulang asset.
 3. Jangan ubah urutan load `uikit-admin.js` di layout admin.
 4. Jika menyentuh menu admin, pastikan kompatibel dengan adapter system.
 5. Setelah edit SCSS/JS, ingat perlu build untuk output production.
+
+## Dashboard, redirect, dan flash
+
+Host menyediakan dashboard pada `/admin`, menggunakan layout admin Uikit. Buat
+`templates/admin/dashboard.php` di host untuk mengganti template bawaan.
+
+Atur tujuan default di `config/app.php` melalui `Uikit.loginRedirect` dan
+`Uikit.logoutRedirect` (default `/admin` dan `/`). Redirect login yang
+diminta melalui query tetap mengikuti pemeriksaan CakeDC/Users.
+
+Flash default, success, error, warning, dan info ditampilkan sebagai UIkit alert,
+termasuk pada halaman login. Elemen flash kustom tetap dapat digunakan.
+
+Aturan host membolehkan halaman publik host tanpa login; area `/admin` dan
+`/api` tidak termasuk bypass ini. Plugin domain dan API tetap bertanggung
+jawab atas autentikasi dan otorisasinya sendiri. Daftarkan endpoint REST di
+bawah `/api` melalui routing host atau plugin domain.

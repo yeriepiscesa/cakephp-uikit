@@ -9,6 +9,7 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 }
 ?>
 <div class="uk-alert-success" uk-alert>
-    <a class="uk-alert-close" uk-close></a>
+    <button class="uk-alert-close" type="button" aria-label="<?= h(__('Close')) ?>" uk-close></button>
     <p><?= $message ?></p>
 </div>
+

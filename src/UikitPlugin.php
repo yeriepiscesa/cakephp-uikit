@@ -49,6 +49,42 @@ class UikitPlugin extends BasePlugin
             );
         });
 
+        $app->getEventManager()->on('Controller.beforeRender', function (EventInterface $event): void {
+            $controller = $event->getSubject();
+            $request = $controller->getRequest();
+            if ($request->getParam('plugin') !== 'CakeDC/Users'
+                || $request->getParam('controller') !== 'Users'
+                || $request->getParam('prefix') !== null
+            ) {
+                return;
+            }
+
+            $builder = $controller->viewBuilder();
+            if ($builder->getTheme() !== null && $builder->getTheme() !== 'Uikit') {
+                return;
+            }
+            $template = $builder->getTemplate() ?? $request->getParam('action');
+            if (!is_string($template) || str_contains($template, '/') || str_contains($template, '.')) {
+                return;
+            }
+            $template = \Cake\Utility\Inflector::underscore($template);
+            $authTemplates = [
+                'login', 'register', 'request_login_link', 'request_reset_password',
+                'resend_token_validation', 'single_token_login', 'social_email', 'verify', 'webauthn2fa',
+            ];
+            if (!in_array($template, $authTemplates, true)) {
+                return;
+            }
+
+            $relativePath = 'CakeDC' . DS . 'Users' . DS . 'Users' . DS . $template . '.php';
+            foreach ((array)Configure::read('App.paths.templates', []) as $path) {
+                if (is_file(rtrim($path, DS) . DS . 'plugin' . DS . $relativePath)) {
+                    return;
+                }
+            }
+            $builder->setTemplate('Uikit./examples/users/auth/CakeDC/Users/Users/' . $template);
+        });
+
         if (PHP_SAPI === 'cli') {
             $app->getEventManager()->on(new Event\BakeListener());
         }

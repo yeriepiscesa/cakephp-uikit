@@ -1,0 +1,130 @@
+/* UIkit applies an inverse palette to off-canvas bars; the filter panel has its own light body. */
+.admin-filter-toggle { position: relative; }
+.admin-filter-toggle__active {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: #e12535;
+}
+.uk-offcanvas-bar.admin-filter-drawer {
+    width: min(400px, 100vw);
+    padding: 0;
+    background: #fff;
+    color: #17283b;
+    box-shadow: -8px 0 30px rgba(15, 30, 48, .18);
+}
+
+.admin-filter-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--theme-sidebar, #16293d);
+}
+
+.uk-offcanvas-bar.admin-filter-drawer .admin-filter-drawer__header h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.uk-offcanvas-bar.admin-filter-drawer .admin-filter-drawer__close {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .4);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    color: #fff;
+}
+
+.admin-filter-drawer__close:hover,
+.admin-filter-drawer__close:focus-visible {
+    background: rgba(255, 255, 255, .22) !important;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.admin-filter-drawer__body { padding: 24px; }
+.admin-filter-drawer__body .uk-margin:first-of-type { margin-top: 0; }
+.uk-offcanvas-bar.admin-filter-drawer label {
+    display: block;
+    margin-bottom: 7px;
+    color: #26384d;
+    font-weight: 600;
+}
+
+.uk-offcanvas-bar.admin-filter-drawer .uk-input,
+.uk-offcanvas-bar.admin-filter-drawer select:not(.ts-hidden-accessible),
+.uk-offcanvas-bar.admin-filter-drawer .ts-control {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 42px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: #17283b;
+}
+
+/* Tom Select copies the original select's uk-select class onto its wrapper. */
+.uk-offcanvas-bar.admin-filter-drawer .ts-wrapper.uk-select {
+    height: auto;
+    max-width: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.uk-offcanvas-bar.admin-filter-drawer .ts-control { padding: 9px 12px; }
+.uk-offcanvas-bar.admin-filter-drawer .ts-control > input {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #17283b;
+    box-shadow: none;
+}
+.uk-offcanvas-bar.admin-filter-drawer .ts-wrapper.multi .ts-control > div {
+    margin: 2px 5px 2px 0;
+    border: 1px solid #c9d9ef;
+    border-radius: 5px;
+    background: #eaf2ff;
+    color: #203c63;
+}
+.uk-offcanvas-bar.admin-filter-drawer .ts-dropdown { color: #17283b; background: #fff; }
+.uk-offcanvas-bar.admin-filter-drawer .uk-input:focus,
+.uk-offcanvas-bar.admin-filter-drawer .ts-wrapper.focus .ts-control {
+    border-color: var(--theme-primary, #2563eb);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+    outline: none;
+}
+
+.admin-filter-drawer__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.uk-offcanvas-bar.admin-filter-drawer .admin-filter-drawer__actions .uk-button-primary {
+    background: var(--theme-primary, #2563eb);
+    border-color: var(--theme-primary, #2563eb);
+    color: #fff;
+}
+.uk-offcanvas-bar.admin-filter-drawer .admin-filter-drawer__actions .uk-button-default {
+    background: #fff;
+    border-color: #cbd5e1;
+    color: #26384d;
+}
+
+@media (max-width: 480px) {
+    .admin-filter-drawer__header { padding: 18px 20px; }
+    .admin-filter-drawer__body { padding: 20px; }
+    .admin-filter-drawer__actions > * { flex: 1 1 auto; text-align: center; }
+}

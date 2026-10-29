@@ -24,17 +24,22 @@ function initLookupSelects() {
             .split(',')
             .map((field) => field.trim())
             .filter(Boolean);
-        const searchField = select.dataset.searchField || labelFields[0] || 'name';
-
-        new TomSelect(select, {
+        const control = new TomSelect(select, {
+            plugins: select.multiple ? ['remove_button'] : (select.hasAttribute('data-clearable') ? ['clear_button'] : []),
             valueField: 'id',
             labelField: labelFields[0],
-            searchField,
+            // The server searches all configured fields; do not hide matches using a second client-side search.
+            searchField: [],
             create: false,
             load(query, callback) {
-                fetch(`${lookupUrl}?search=${encodeURIComponent(query)}`)
-                    .then((response) => response.json())
-                    .then((json) => callback(json.results))
+                const url = new URL(lookupUrl, window.location.href);
+                url.searchParams.set('search', query);
+                fetch(url, { headers: { Accept: 'application/json' } })
+                    .then((response) => {
+                        if (!response.ok) throw new Error(`Lookup failed: ${response.status}`);
+                        return response.json();
+                    })
+                    .then((json) => callback(Array.isArray(json.results) ? json.results : []))
                     .catch(() => callback());
             },
             render: {
@@ -46,6 +51,7 @@ function initLookupSelects() {
                 },
             },
         });
+        control.wrapper.classList.remove('uk-select');
     });
 }
 

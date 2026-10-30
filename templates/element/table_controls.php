@@ -68,7 +68,7 @@ $hiddenFields = function (array $values, string $prefix = '') use (&$hiddenField
             <?= $this->Form->control('limit', [
                 'type' => 'select',
                 'options' => [10 => 10, 25 => 25, 50 => 50, 100 => 100],
-                'value' => $this->getRequest()->getQuery('limit', 10),
+                'value' => $this->getRequest()->getQuery('limit', $defaultLimit ?? 10),
                 'label' => false,
                 'class' => 'uk-select',
                 'onchange' => 'this.form.requestSubmit()',

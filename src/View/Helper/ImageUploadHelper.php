@@ -138,12 +138,12 @@ class ImageUploadHelper extends Helper
             'x-on:change' => 'handleFileChange',
             'help' => $config['help'],
             'required' => $config['required'],
-            'aria-label' => 'Upload a file',
+            'aria-label' => __('Upload a file'),
         ]);
         $html .= '<button name="upload-' . h($field) . '" 
                     class="uk-input uk-button uk-button-default" 
                     type="button" 
-                    aria-label="Custom controls">Select a file...</button>';
+                    aria-label="' . h(__('Select a file')) . '">' . h(__('Select a file...')) . '</button>';
         $html .= '</div>';
 
         $html .= '</div>'; // end uk-margin

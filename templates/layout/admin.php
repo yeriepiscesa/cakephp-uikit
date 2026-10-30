@@ -11,7 +11,7 @@ $profileUrl = \Cake\Core\Plugin::isLoaded('BusinessUsers')
     : ['plugin' => 'CakeDC/Users', 'prefix' => false, 'controller' => 'Users', 'action' => 'profile'];
 ?>
 <!DOCTYPE html>
-<html lang="<?= h(\Cake\I18n\I18n::getLocale()) ?>">
+<html lang="<?= h(str_replace('_', '-', \Cake\I18n\I18n::getLocale())) ?>">
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">

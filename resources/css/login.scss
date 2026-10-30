@@ -1,4 +1,10 @@
 .theme-brand { display:flex; align-items:center; gap:10px; color:#203047; font-size:20px; font-weight:750; line-height:1.2; text-decoration:none; }
+.language-switcher { position:relative; align-self:center; margin-right:16px; }
+.language-switcher__trigger { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border:0; border-radius:8px; background:transparent; color:#40536b; font:inherit; cursor:pointer; }
+.language-switcher__trigger:hover, .language-switcher__trigger:focus-visible { background:#eef3fa; color:var(--theme-primary, #2563eb); }
+.language-switcher__trigger:focus-visible { outline:2px solid var(--theme-primary, #2563eb); outline-offset:2px; }
+.language-switcher__menu { min-width:180px; }
+.language-switcher__menu .uk-active > a { font-weight:700; }
 .theme-brand:hover { text-decoration:none; color:inherit; }
 .theme-brand-light { color:#fff; }
 .theme-brand small { display:block; color:#a9bacb; font-size:9px; letter-spacing:1.6px; text-transform:uppercase; margin-top:3px; }

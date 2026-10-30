@@ -100,6 +100,16 @@ Helper tambahan bisa didaftarkan via `config/app_view.php` plugin Uikit atau ove
 Configure::write('Uikit.viewHelpers', ['MyPlugin.MyHelper']);
 ```
 
+### Pemilih bahasa
+
+Layout menyediakan slot opsional `Uikit.languageSwitcherElement`. Host dapat
+mengaturnya ke `Uikit.language_switcher` untuk menampilkan pilihan English dan
+Bahasa Indonesia. Element ini mengirim parameter GET `_locale` dan mempertahankan
+parameter halaman lainnya; host harus menyediakan middleware yang memvalidasi
+locale, menyimpan pilihan, dan mengatur locale CakePHP pada setiap request.
+Tanpa konfigurasi dan middleware host, slot tidak ditampilkan dan element ini
+tidak mengubah bahasa dengan sendirinya.
+
 ### Vite / CakeVite
 
 Plugin memuat `config/app_vite.php` secara otomatis dengan config key `uikit`. Salin `config/uikit_assets.json` ke folder `config/` host untuk mengubah path:

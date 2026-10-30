@@ -6,6 +6,9 @@
 
 $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
 $user = $this->getRequest()->getAttribute('identity');
+$profileUrl = \Cake\Core\Plugin::isLoaded('BusinessUsers')
+    ? ['plugin' => 'BusinessUsers', 'prefix' => 'Admin', 'controller' => 'Users', 'action' => 'profile']
+    : ['plugin' => 'CakeDC/Users', 'prefix' => false, 'controller' => 'Users', 'action' => 'profile'];
 ?>
 <!DOCTYPE html>
 <html lang="<?= h(\Cake\I18n\I18n::getLocale()) ?>">
@@ -74,7 +77,7 @@ $user = $this->getRequest()->getAttribute('identity');
                     </a>
                     <div id="admin-account-menu" uk-dropdown="mode: click; pos: bottom-right">
                         <ul class="uk-nav uk-dropdown-nav">
-                            <li><?= $this->Html->link('<span uk-icon="icon: user" aria-hidden="true"></span> ' . h(__('Profile')), ['controller' => 'Users', 'action' => 'profile', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
+                            <li><?= $this->Html->link('<span uk-icon="icon: user" aria-hidden="true"></span> ' . h(__('Profile')), $profileUrl, ['escape' => false]) ?></li>
                             <li><?= $this->Html->link('<span uk-icon="icon: sign-out" aria-hidden="true"></span> ' . h(__('Logout')), ['controller' => 'Users', 'action' => 'logout', 'plugin' => 'CakeDC/Users', 'prefix' => false], ['escape' => false]) ?></li>
                         </ul>
                     </div>
@@ -93,10 +96,7 @@ $user = $this->getRequest()->getAttribute('identity');
         </a>
         <!-- User Info -->
         <div class="admin-user-info">
-            <a class="admin-user-avatar" href="<?= h($this->Url->build([
-                'plugin' => 'CakeDC/Users', 'prefix' => false,
-                'controller' => 'Users', 'action' => 'profile',
-            ])) ?>" aria-label="<?= h(__('Go to profile')) ?>">
+            <a class="admin-user-avatar" href="<?= h($this->Url->build($profileUrl)) ?>" aria-label="<?= h(__('Go to profile')) ?>">
                 <?php if ($user && !empty($user['id']) && \Cake\Core\Plugin::isLoaded('BusinessUsers')): ?>
                     <img src="<?= h($this->Url->build([
                         'plugin' => 'BusinessUsers', 'prefix' => false,

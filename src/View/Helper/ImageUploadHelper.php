@@ -35,6 +35,7 @@ class ImageUploadHelper extends Helper
      *   - deleteFieldName: Name for delete checkbox field (default: 'delete_{field}')
      *   - help: Help text below file input (default: null)
      *   - required: Mark field as required (default: false)
+     *   - accept: Accepted image MIME types for the file picker (default: null)
      * @return string
      */
     public function control(string $field, array $options = []): string
@@ -52,6 +53,7 @@ class ImageUploadHelper extends Helper
             'deleteFieldName' => 'delete_' . $field,
             'help' => null,
             'required' => false,
+            'accept' => null,
         ];
 
         $config = $options + $defaults;
@@ -131,6 +133,8 @@ class ImageUploadHelper extends Helper
         $html .= $this->Form->control($field, [
             'label' => false,
             'type' => 'file',
+            'id' => $field,
+            'accept' => $config['accept'],
             'x-on:change' => 'handleFileChange',
             'help' => $config['help'],
             'required' => $config['required'],

@@ -94,7 +94,7 @@ $cancelUrl = $options['returnUrl'] ?? $returnUrl ?? $options['cancelUrl'];
         </div>
         <div class="uk-grid-small" uk-grid>
             <?php if ($options['showList']): ?>
-                <div><?= $this->Html->link(__('List'), ['action' => 'index'], ['class' => 'uk-button uk-button-default']) ?></div>
+                <div><?= $this->Html->link(__('Back to list'), $cancelUrl, ['class' => 'uk-button uk-button-default']) ?></div>
             <?php endif; ?>
             
             <?php if ($options['showNew']): ?>

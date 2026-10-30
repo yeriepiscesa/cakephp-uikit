@@ -164,7 +164,13 @@ $user = $this->getRequest()->getAttribute('identity');
             <?= $this->Flash->render() ?>
 
             <!-- Page Content -->
-            <?= $this->fetch('content') ?>
+            <?php if ($this->getRequest()->getParam('action') === 'view'): ?>
+                <div class="admin-view-container">
+                    <?= $this->fetch('content') ?>
+                </div>
+            <?php else: ?>
+                <?= $this->fetch('content') ?>
+            <?php endif; ?>
         </div>
     </main>
 

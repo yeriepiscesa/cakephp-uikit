@@ -36,6 +36,7 @@ class ImageUploadHelper extends Helper
      *   - help: Help text below file input (default: null)
      *   - required: Mark field as required (default: false)
      *   - accept: Accepted image MIME types for the file picker (default: null)
+     *   - center: Center the preview and placeholder (default: false)
      * @return string
      */
     public function control(string $field, array $options = []): string
@@ -54,6 +55,7 @@ class ImageUploadHelper extends Helper
             'help' => null,
             'required' => false,
             'accept' => null,
+            'center' => false,
         ];
 
         $config = $options + $defaults;
@@ -76,7 +78,7 @@ class ImageUploadHelper extends Helper
 
         // Preview Container
         $html .= '<div x-show="preview" class="uk-margin-small-bottom">';
-        $html .= '<div :style="containerStyle">';
+        $html .= '<div :style="containerStyle"' . ($config['center'] ? ' class="uk-margin-auto"' : '') . '>';
         $html .= '<img :src="preview" :style="imageStyle" alt="Preview">';
         $html .= '</div>';
 
@@ -121,7 +123,7 @@ class ImageUploadHelper extends Helper
         $html .= '</div>'; // end preview container
 
         // Placeholder when no preview
-        $html .= '<div x-show="!preview" :style="containerStyle" class="uk-margin-small-bottom uk-flex uk-flex-center uk-flex-middle uk-background-muted">';
+        $html .= '<div x-show="!preview" :style="containerStyle" class="uk-margin-small-bottom uk-flex uk-flex-center uk-flex-middle uk-background-muted' . ($config['center'] ? ' uk-margin-auto' : '') . '">';
         $html .= '<div class="uk-text-center uk-text-muted">';
         $html .= '<span uk-icon="icon: image; ratio: 3"></span>';
         $html .= '<p class="uk-margin-remove-vertical uk-text-small">' . __('No image selected') . '</p>';

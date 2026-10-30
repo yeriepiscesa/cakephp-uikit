@@ -106,7 +106,7 @@ $profileUrl = \Cake\Core\Plugin::isLoaded('BusinessUsers')
                     <?= h(strtoupper(substr((string)($user->first_name ?? $user->email ?? 'A'), 0, 1))) ?>
                 <?php endif; ?>
             </a>
-            <h4 class="admin-user-name uk-margin-remove"><?= h($user ? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: $user->email : __('Admin User')) ?></h4>
+            <h4 class="admin-user-name uk-margin-remove"><a href="<?= h($this->Url->build($profileUrl)) ?>"><?= h($user ? trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: $user->email : __('Admin User')) ?></a></h4>
             <p class="admin-user-role uk-margin-remove"><?= h($user->role ?? __('Administrator')) ?></p>
         </div>
 

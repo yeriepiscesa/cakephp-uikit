@@ -13,6 +13,16 @@ class FlashHelper extends CakeFlashHelper
         if ($messages === null) {
             return null;
         }
+        $seen = [];
+        $unique = [];
+        foreach (array_reverse($messages) as $message) {
+            if (in_array($message['message'], $seen, true)) {
+                continue;
+            }
+            $seen[] = $message['message'];
+            $unique[] = $message;
+        }
+        $messages = array_reverse($unique);
         $output = '';
         foreach ($messages as $message) {
             $message = $options + $message;

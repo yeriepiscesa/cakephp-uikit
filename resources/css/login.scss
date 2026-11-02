@@ -18,7 +18,8 @@
 .theme-login-message p { color:#d0dce8; line-height:1.8; }
 .theme-eyebrow { color:#7290aa; font-size:10px; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; }
 .theme-login-footer { color:#bdcbd9; font-size:11px; }
-.theme-login-main { display:flex; justify-content:center; align-items:center; padding:60px 30px; background:#fff; }
+.theme-login-main { position:relative; display:flex; justify-content:center; align-items:center; padding:80px 30px 60px; background:#fff; }
+.theme-login-language { position:absolute; top:16px; right:16px; }
 .theme-login-card { width:100%; max-width:390px; }
 .theme-login-card h2 { font-size:29px; letter-spacing:-.8px; margin:10px 0; }
 .theme-login-intro { color:#7b899a; margin-bottom:34px; }

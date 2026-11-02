@@ -34,14 +34,7 @@ $siteName = (string)\Cake\Core\Configure::read('Uikit.siteName', 'Application');
     <?= $this->element('Uikit.branding_styles') ?>
 </head>
 <body>
-    <?php if ($languageSwitcher = \Cake\Core\Configure::read('Uikit.languageSwitcherElement')): ?>
-        <div class="uk-flex uk-flex-right uk-padding-small">
-            <?= $this->element($languageSwitcher) ?>
-        </div>
-    <?php endif; ?>
-
-
-    <!-- Main Content -->
+<!-- Main Content -->
 <?php
 $siteName = (string)Configure::read('Uikit.siteName', 'Application');
 $tagline = (string)Configure::read('Uikit.branding.tagline', __('Workspace'));
@@ -64,7 +57,11 @@ $logo = Configure::read('Uikit.branding.logo');
             <p class="theme-login-footer">&copy; <?= date('Y') ?> <?= h($siteName) ?></p>
         </div>
     </section>
-    <section class="theme-login-main"><div class="theme-login-card">
+    <section class="theme-login-main">
+        <?php if ($languageSwitcher = Configure::read('Uikit.languageSwitcherElement')): ?>
+            <div class="theme-login-language"><?= $this->element($languageSwitcher) ?></div>
+        <?php endif; ?>
+        <div class="theme-login-card">
         <div class="theme-login-mobile-brand theme-brand"><?php if ($logo): ?><img class="theme-brand-logo" src="<?= h($this->Url->build((string)$logo)) ?>" alt=""><?php else: ?><span class="theme-brand-mark" aria-hidden="true">&#10022;</span><?php endif; ?><span><?= h($siteName) ?><small><?= h($tagline) ?></small></span></div>
         <?= $this->Flash->render() ?>
         <?= $this->Flash->render('auth') ?>
@@ -75,4 +72,3 @@ $logo = Configure::read('Uikit.branding.logo');
     <?= $this->fetch('script') ?>
 </body>
 </html>
-

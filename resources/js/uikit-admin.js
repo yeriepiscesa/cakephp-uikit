@@ -1,4 +1,8 @@
 import Alpine from 'alpinejs';
+import { repeater } from './repeater.js';
+
+Alpine.data('repeater', repeater);
+window.UikitRepeater = repeater;
 
 // UIkit theme JavaScript
 import UIkit from 'uikit';

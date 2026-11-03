@@ -1,0 +1,27 @@
+/* Shared controls for form repeaters. */
+.uikit-repeater-controls {
+  border: 1px solid #d8e0ea;
+  border-radius: 8px;
+}
+
+.uikit-repeater-controls > .uk-button {
+  border: 0;
+  border-radius: 0;
+}
+
+.uikit-repeater-controls > .uk-button:first-child { border-radius: 7px 0 0 7px; }
+.uikit-repeater-controls > .uk-button:last-child { border-radius: 0 7px 7px 0; }
+.uikit-repeater-controls > .uk-button + .uk-button { margin-left: 0; }
+.uikit-repeater-controls > .uk-button:hover { transform: none; }
+
+.uikit-repeater-delete {
+  border: 0;
+  background: #f3f6f9;
+  cursor: pointer;
+}
+
+.uikit-repeater-delete:hover { background: #e7ebf0; }
+.uikit-repeater-delete:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .32);
+  outline-offset: 2px;
+}

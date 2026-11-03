@@ -427,3 +427,87 @@ untuk halaman add/edit/view, dan halaman saat ini. Pada form CrudConnect,
 tautan daftar memakai URL kembali yang sudah disimpan. Template dapat mengganti
 breadcrumb otomatis dengan mengisi view block `breadcrumbs`; markup kustom
 bertanggung jawab atas escaping dan label aksesibilitasnya sendiri.
+
+### Repeater form
+
+`repeater` adalah state Alpine untuk kumpulan field dalam satu form. Layout admin
+mendaftarkannya melalui `uikit-admin.js`; halaman tetap harus memuat entry point
+`admin/form.js` (atau entry point lain yang menjalankan Alpine). Komponen tidak
+melakukan request, validasi, atau otorisasi. Controller pemilik form harus
+memvalidasi seluruh data dan menentukan cara menyimpan serta menghapus record.
+
+Contoh minimal (nilai awal harus di-encode dengan `json_encode` dan di-escape
+untuk atribut HTML; field dan label ditentukan oleh template domain):
+
+```html
+<div x-data="repeater({ items: [], defaults: { name: '' } })">
+    <template x-for="(item, index) in items" :key="item.key">
+        <div class="uk-margin-small">
+            <label :for="'group-name-' + item.key">Name</label>
+            <input class="uk-input" :id="'group-name-' + item.key"
+                :name="`groups[${index}][name]`" x-model="item.data.name">
+            <input type="hidden" :name="`groups[${index}][id]`" :value="item.data.id || ''">
+            <button type="button" class="uk-button uk-button-default" @click="duplicate(item)">Duplicate</button>
+            <button type="button" class="uk-button uk-button-danger" @click="remove(item)">Remove</button>
+        </div>
+    </template>
+    <p x-show="items.length === 0">No items.</p>
+    <button type="button" class="uk-button uk-button-default" @click="add()">Add</button>
+</div>
+```
+
+`add()` dan `duplicate(item)` membuka item baru dengan `editing = true`;
+`edit(item)`, `save(item)`, dan `cancel(item)` tersedia untuk template yang
+memiliki mode lihat/edit. `save()` hanya menyelesaikan edit lokal. `cancel()`
+memulihkan salinan awal atau membuang item baru. Duplikasi menghapus properti
+`id` tingkat atas; identitas bersarang harus ditangani template/domain sendiri.
+`remove()` hanya menghapus item dari state: form yang perlu menghapus record
+tersimpan harus menyediakan mekanisme penghapusan eksplisit yang divalidasi
+server. Setiap repeater berdiri sendiri; gunakan nama input unik dan pastikan
+semua field yang ingin dikirim tetap aktif pada saat form dikirim.
+
+Untuk menggunakan element CakePHP, buat markup field sebagai view block atau
+string template tepercaya, lalu panggil:
+
+```php
+<?= $this->element('Uikit.repeater', [
+    'items' => $groups, // array data JSON-compatible, tanpa informasi sensitif
+    'defaults' => ['name' => ''],
+    'itemTemplate' => $this->fetch('groupRepeaterFields'),
+    'addLabel' => __('Add group'),
+    'emptyLabel' => __('No groups.'),
+]) ?>
+```
+
+`itemTemplate` adalah HTML tepercaya yang dibuat template pemanggil, bukan input
+pengguna. Markup tersebut dapat memakai variabel Alpine `item` dan `index`
+seperti contoh di atas, termasuk tombol remove/duplicate sesuai kebutuhan.
+Data awal di-escape untuk atribut HTML; nilai dinamis dalam markup tetap harus
+menggunakan binding yang aman. Tentukan ID field yang unik antar repeater.
+
+Untuk JavaScript langsung, import `repeater` dari
+`resources/js/repeater.js` dalam build konsumen, atau gunakan
+`window.UikitRepeater(config)` setelah entry `uikit-admin.js` dimuat. Factory
+mengembalikan objek state yang sama; manipulasi DOM dan integrasi form menjadi
+tanggung jawab pemanggil. Alpine juga menyediakan `x-data="repeater(...)"`.
+
+Repeater items also expose `item.expanded`, `toggle(item)`, `expandAll()`, and
+`collapseAll()`. Set `expanded: false` (or the CakePHP element parameter
+`expanded => false`) to start existing items collapsed; new items and items
+with `_errors` start expanded. Bind a button's `aria-expanded` and
+`aria-controls` to the item and keep fields enabled while collapsed.
+
+For forms with explicit server-side deletion, the CakePHP element accepts
+`removedName` and optional `removedIds`. The JS factory equivalents are
+`trackRemoved: true` and `removedIds`. Calling `remove(item)` records a saved
+item's `id` in `removedIds`; new items are simply removed. The element renders
+hidden inputs for these IDs. The consuming controller must authorize and scope
+them, perform the deletion, and preserve pending IDs on validation failure.
+
+Untuk menampilkan tombol buka/tutup semua pada element, set
+`'collapseControls' => true`. Tombol tersebut memakai `expandAll()` dan
+`collapseAll()` dan tidak mengubah atau menonaktifkan nilai field.
+
+Parameter `heading` opsional menampilkan judul di sisi kiri kontrol
+`collapseControls` dalam baris yang sama. Tanpa `heading`, element tetap dapat
+dipakai seperti sebelumnya.

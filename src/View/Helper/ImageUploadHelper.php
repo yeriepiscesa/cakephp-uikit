@@ -37,6 +37,8 @@ class ImageUploadHelper extends Helper
      *   - required: Mark field as required (default: false)
      *   - accept: Accepted image MIME types for the file picker (default: null)
      *   - center: Center the preview and placeholder (default: false)
+     *   - fit: Image fit, contain or cover (default: contain)
+     *   - overlayInput: Place the file input over the preview (default: false)
      * @return string
      */
     public function control(string $field, array $options = []): string
@@ -56,6 +58,8 @@ class ImageUploadHelper extends Helper
             'required' => false,
             'accept' => null,
             'center' => false,
+            'fit' => 'contain',
+            'overlayInput' => false,
         ];
 
         $config = $options + $defaults;
@@ -64,6 +68,7 @@ class ImageUploadHelper extends Helper
             'width' => $config['width'],
             'height' => $config['height'],
             'shape' => $config['shape'],
+            'fit' => $config['fit'],
         ];
         if ($config['currentImage']) {
             $alpineConfig['currentImage'] = $config['currentImage'];
@@ -76,10 +81,33 @@ class ImageUploadHelper extends Helper
         $html = '<div class="uk-margin" x-data="imagePreview(' . h($alpineConfigStr) . ')">';
         $html .= '<label class="uk-form-label" for="' . h($field) . '">' . h($label) . '</label>';
 
-        // Preview Container
-        $html .= '<div x-show="preview" class="uk-margin-small-bottom">';
-        $html .= '<div :style="containerStyle"' . ($config['center'] ? ' class="uk-margin-auto"' : '') . '>';
-        $html .= '<img :src="preview" :style="imageStyle" alt="Preview">';
+        // A single container switches between the image and the empty state.
+        $html .= '<div :style="containerStyle" class="uk-margin-small-bottom' . ($config['center'] ? ' uk-margin-auto' : '') . '"';
+        if ($config['overlayInput']) {
+            $html .= ' x-on:mouseenter="showPicker = true" x-on:mouseleave="showPicker = false"';
+        }
+        $html .= '>';
+        $html .= '<img x-show="preview" :src="preview" :style="imageStyle" alt="' . h(__('Preview')) . '">';
+        $html .= '<div x-show="!preview" class="uk-text-center uk-text-muted">';
+        $html .= '<span uk-icon="icon: image; ratio: 3"></span>';
+        $html .= '<p class="uk-margin-remove-vertical uk-text-small">' . __('No image selected') . '</p>';
+        $html .= '</div>';
+
+        if ($config['overlayInput']) {
+            $html .= '<span aria-hidden="true" x-show="showPicker || pickerFocused || touchPicker" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);color:white;pointer-events:none;">' . h(__('Select a file...')) . '</span>';
+            $html .= $this->Form->control($field, [
+                'label' => false,
+                'type' => 'file',
+                'id' => $field,
+                'accept' => $config['accept'],
+                'x-on:change' => 'handleFileChange',
+                'x-on:focus' => 'pickerFocused = true',
+                'x-on:blur' => 'pickerFocused = false',
+                'required' => $config['required'],
+                'aria-label' => __('Select a file'),
+                'style' => 'position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;',
+            ]);
+        }
         $html .= '</div>';
 
         // File info (name, size, type)
@@ -120,33 +148,27 @@ class ImageUploadHelper extends Helper
             $html .= '</div>';
         }
 
-        $html .= '</div>'; // end preview container
-
-        // Placeholder when no preview
-        $html .= '<div x-show="!preview" :style="containerStyle" class="uk-margin-small-bottom uk-flex uk-flex-center uk-flex-middle uk-background-muted' . ($config['center'] ? ' uk-margin-auto' : '') . '">';
-        $html .= '<div class="uk-text-center uk-text-muted">';
-        $html .= '<span uk-icon="icon: image; ratio: 3"></span>';
-        $html .= '<p class="uk-margin-remove-vertical uk-text-small">' . __('No image selected') . '</p>';
-        $html .= '</div>';
-        $html .= '</div>';
-
-        // File input
-        $html .= '<div uk-form-custom="target: true" class="uk-form-controls uk-width-expand uk-margin-small-top">';
-        $html .= $this->Form->control($field, [
-            'label' => false,
-            'type' => 'file',
-            'id' => $field,
-            'accept' => $config['accept'],
-            'x-on:change' => 'handleFileChange',
-            'help' => $config['help'],
-            'required' => $config['required'],
-            'aria-label' => __('Upload a file'),
-        ]);
-        $html .= '<button name="upload-' . h($field) . '" 
-                    class="uk-input uk-button uk-button-default" 
-                    type="button" 
-                    aria-label="' . h(__('Select a file')) . '">' . h(__('Select a file...')) . '</button>';
-        $html .= '</div>';
+        if (!$config['overlayInput']) {
+            // Standard file input for other image uploads.
+            $html .= '<div uk-form-custom="target: true" class="uk-form-controls uk-width-expand uk-margin-small-top">';
+            $html .= $this->Form->control($field, [
+                'label' => false,
+                'type' => 'file',
+                'id' => $field,
+                'accept' => $config['accept'],
+                'x-on:change' => 'handleFileChange',
+                'help' => $config['help'],
+                'required' => $config['required'],
+                'aria-label' => __('Upload a file'),
+            ]);
+            $html .= '<button name="upload-' . h($field) . '"
+                        class="uk-input uk-button uk-button-default"
+                        type="button"
+                        aria-label="' . h(__('Select a file')) . '">' . h(__('Select a file...')) . '</button>';
+            $html .= '</div>';
+        } elseif ($config['help']) {
+            $html .= '<p class="uk-text-small uk-text-muted">' . h($config['help']) . '</p>';
+        }
 
         $html .= '</div>'; // end uk-margin
 

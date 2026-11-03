@@ -16,9 +16,15 @@
 // Register component before Alpine starts
 Alpine.data('imagePreview', (config = {}) => ({
     preview: config.currentImage || null,
+    selectedFile: false,
+    removing: false,
+    showPicker: false,
+    pickerFocused: false,
+    touchPicker: window.matchMedia('(hover: none)').matches,
     width: config.width || 300,
     height: config.height || 300,
     shape: config.shape || 'box', // box, circle, rounded
+    fit: config.fit === 'cover' ? 'cover' : 'contain',
         
         init() {
             // Set initial preview if current image exists
@@ -39,9 +45,8 @@ Alpine.data('imagePreview', (config = {}) => ({
             const styles = {
                 width: this.formatDimension(this.width),
                 height: this.formatDimension(this.height),
-                objectFit: 'contain',
-                padding: '10px',
-                display: 'block'
+                objectFit: this.fit,
+                padding: this.fit === 'cover' ? '0' : '10px'
             };
             
             // Apply shape-specific styles
@@ -69,7 +74,7 @@ Alpine.data('imagePreview', (config = {}) => ({
                 height: this.formatDimension(this.height),
                 overflow: 'hidden',
                 backgroundColor: '#f8f8f8',
-                border: '2px dashed #ddd',
+                border: this.preview && this.fit === 'cover' ? '0' : '2px dashed #ddd',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -114,6 +119,8 @@ Alpine.data('imagePreview', (config = {}) => ({
             
             reader.onload = (e) => {
                 this.preview = e.target.result;
+                this.selectedFile = true;
+                this.removing = false;
             };
             
             reader.onerror = () => {
@@ -123,6 +130,12 @@ Alpine.data('imagePreview', (config = {}) => ({
             reader.readAsDataURL(file);
         },
         
+        cancelSelection() {
+            this.$refs.avatarInput.value = '';
+            this.preview = config.currentImage || null;
+            this.selectedFile = false;
+        },
+
         clearPreview() {
             this.preview = null;
         }
